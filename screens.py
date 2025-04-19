@@ -309,11 +309,11 @@ def armor(screen, x, y, stat_info):
 def combat(screen, x, y, stat_info):
     # create boolean variable to run game
     running = True
-
+    # NOTE: PLAYERS SHOULD BE ALLOWED TO TAKE THREE ACTIONS FOR COMBAT EACH DAY.
     screen.fill(BG)
     pg.display.update()
     display_text(screen, 'READY, SET, FIGHT!', 60, BLACK, None, x // 2, 150, 'center')
-    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.85, 'center')
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
     # loop while running is true
     while running:
@@ -338,15 +338,83 @@ def day_end(screen, x, y, stat_info):
     pg.display.update()
 
     display_text(screen, 'ANOTHER LONG DAY HAS COME TO AN END', 60, BLACK, None, x // 2, 150, 'center')
-    display_text(screen, 'What will you do?', 60, BLACK, None, x // 2, 250, 'center')
-    display_menu(screen, MENU_LISTS['END'],50, BLACK, x * 0.5, y * 0.3, -80)
-    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.85, 'center')
+    display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
+    display_menu(screen, MENU_LISTS['END'],50, BLACK, x * 0.5, y * 0.5, -80)
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
     # loop while running is true
     while running:
         for event in pg.event.get():
             # check if a key has been pressed
             if event.type == pg.KEYDOWN:
+
+                if event.key == pg.K_a:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+                    display_text(screen, 'Test?', 50, BLACK, None, x * 0.5, 350, 'center')
+                    # Pick random god to sacrifice to and then make their favor true and add to luck
+
+                if event.key == pg.K_b:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+                    if stat_info.get_success('pure luck'):
+                        addition = random.randint(1, 10)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'The feast was so delicious!', 50, BLACK, None, x * 0.5, 350, 'center')
+                        display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'The food was disgusting and it made everyone sad :(', 50, BLACK, None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+                        display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                if event.key == pg.K_c:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+                    if stat_info.get_success('pure luck'):
+                        addition = random.randint(1, 10)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'What a productive council!', 50, BLACK, None, x * 0.5, 350, 'center')
+                        display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'Everyone just argued the whole time.', 50, BLACK, None, x * 0.5, 350,
+                                     'center')
+                        display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                if event.key == pg.K_d:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+                    if stat_info.get_success('pure luck'):
+                        addition = random.randint(1, 6)
+                        stat_info.modify_val('player', 'STRENGTH', addition)
+
+                        display_text(screen, 'What a great talk! So inspiring!', 50, BLACK, None, x * 0.5, 350,
+                                     'center')
+                        display_text(screen, f'+{addition} Strength', 25, BLACK,
+                                     None, x * 0.5, 410,
+                                     'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-6, -1)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'That was some horrible advice.', 50, BLACK, None, x * 0.5, 350, 'center')
+                        display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
                 if event.key == pg.K_SPACE:
                     return 'night decision'
 
@@ -394,9 +462,9 @@ def night_expedition(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
     display_text(screen, 'OFF WE GO!', 60, BLACK,None, x // 2, 150, 'center')
-    display_text(screen, 'What will you do?', 60, BLACK, None, x // 2, 250, 'center')
-    display_menu(screen, MENU_LISTS['EXPEDITION'],50, BLACK, x * 0.5, y * 0.3, -80)
-    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.85, 'center')
+    display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
+    display_menu(screen, MENU_LISTS['EXPEDITION'],50, BLACK, x * 0.5, y * 0.5, -80)
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
 
     # loop while running is true
@@ -404,6 +472,97 @@ def night_expedition(screen, x, y, stat_info):
         for event in pg.event.get():
             # check if a key has been pressed
             if event.type == pg.KEYDOWN:
+
+                if event.key == pg.K_a:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('player'):
+                        addition = random.randint(1, 10)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'You found some battle plans! Great!', 50, BLACK, None, x * 0.5, 350,
+                                     'center')
+                        display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'You couldn\'t find anything :(', 50, BLACK, None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+                        display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                if event.key == pg.K_b:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('player'):
+                        addition = random.randint(1, 10)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'You did it!', 50, BLACK, None, x * 0.5, 350, 'center')
+                        display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('player', 'HEALTH', addition)
+
+                        display_text(screen, 'You DID NOT do it :(', 50, BLACK, None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+                        display_text(screen, f'{addition} Health', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                if event.key == pg.K_c:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('player'):
+                        addition = random.randint(1, 10)
+                        stat_info.modify_val('army', 'RESOURCES', addition)
+
+                        display_text(screen, 'You managed to fill an entire chariot with resources!', 50, BLACK, None,
+                                     x * 0.5, 350, 'center')
+                        display_text(screen, f'+{addition} Resources', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'You couldnt get anything :(', 50, BLACK, None, x * 0.5, 350,
+                                     'center')
+                        display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                if event.key == pg.K_d:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('player'):
+                        addition = random.randint(1, 6)
+                        stat_info.modify_val('army', 'MORALE', addition)
+
+                        display_text(screen, 'You got someone!', 50, BLACK, None, x * 0.5, 350,
+                                     'center')
+                        display_text(screen, f'+{addition} Morale', 25, BLACK,
+                                     None, x * 0.5, 410,
+                                     'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-6, -1)
+                        stat_info.modify_val('player', 'HEALTH', addition)
+
+                        display_text(screen, 'You got caught and the guards attacked you.', 50, BLACK, None, x * 0.5,
+                                     350,
+                                     'center')
+                        display_text(screen, f'{addition} Health', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
                 if event.key == pg.K_SPACE:
                     return 'day begin'
 

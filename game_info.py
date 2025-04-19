@@ -2,7 +2,7 @@ import random
 
 class GameStats:
     def __init__(self):
-        start_val = 50
+        start_val = 100
 
         # Player and army stats start at 100
         self.player = {'HEALTH' : start_val,
