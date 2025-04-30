@@ -13,33 +13,35 @@ class GameStats:
                      'MORALE' : start_val,
                      'RESOURCES' : start_val}
 
-        self.armor = {'HELMET' : False,
-                      'BREASTPLATE' : False,
-                      'SHIELD' : False}
+        self.armor = {'HELMET' : {'equipped' : False,
+                                  'lvl' : 33},
+                      'BREASTPLATE' : {'equipped' : False,
+                                  'lvl' : 33},
+                      'SHIELD' : {'equipped' : False,
+                                  'lvl' : 33}}
 
-        self.weapons = {'SPEAR' : False,
-                        'SWORD' : False,
-                        'BOW' : False}
+        self.weapons = {'SPEAR' : {'equipped' : False,
+                                  'skill' : 10},
+                        'SWORD' : {'equipped' : False,
+                                  'skill' : 10},
+                        'BOW' : {'equipped' : False,
+                                  'skill' : 10}}
 
         # Default luck is 50%, no gods in favor at game start
-        self.favorable_gods = {}
-        self.neutral_gods = {}
-        self.unfavorable_gods = {}
+        self.favorable_gods = {'Hera' :False,
+                               'Athena': False,
+                               'Thetis': False,
+                               'Hermes': False
+                               }
+        self.neutral_gods = {'Zeus' : False}
 
-        self.hidden = {'luck' : 0.5,
-                       'Hera' : False,
-                       'Athena' : False,
-                       'Thetis' : False,
-                       'Zeus' : False,
-                       'Hades' : False,
-                       'Hermes' : False,
-                       'Iris' : False,
-                       'Persephone' : False,
-                       'Demeter' : False,
-                       'Aphrodite' : False,
-                       'Apollo' : False,
-                       'Poseidon' : False,
-                       'Ares' : False}
+        self.unfavorable_gods = {'Aphrodite' : False,
+                                 'Apollo' : False,
+                                 'Ares' : False,
+                                 'Artemis' : False
+                                 }
+
+        self.luck = 0.5
 
         self.armies = ['Boeotians',
                        'Minyans',
@@ -62,15 +64,26 @@ class GameStats:
             elif self.army[name] < 0:
                 self.army[name] = 0
 
+        if stat_type == 'armor':
+            self.armor[name]['lvl'] += val
+            if self.armor[name]['lvl'] > 100:
+                self.armor[name]['lvl'] = 100
+            elif self.armor[name]['lvl'] < 0:
+                self.armor[name]['lvl'] = 0
+
+    def armor_off(self):
+        for item in self.armor.keys():
+            self.armor[item]['equipped'] = False
+
     def get_success(self, stat_type):
         vals = 0
         if stat_type == 'pure luck':
-            return random.random() <= self.hidden['luck']
+            return random.random() <= self.luck
         elif stat_type == 'player':
             vals = sum(self.player.values())
         elif stat_type == 'army':
             vals = sum(self.army.values())
         elif stat_type == 'overall':
             vals = sum(self.player.values()) + sum(self.army.values())
-        chance = (vals * self.hidden['luck']) / 100
+        chance = (vals * self.luck) / 100
         return random.random() <= chance

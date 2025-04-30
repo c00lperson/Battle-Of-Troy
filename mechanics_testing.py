@@ -63,7 +63,7 @@ def main():
         elif scrn == 'night decision':
             scrn = night_decision(screen, x, y)
             if scrn == 'day begin':
-                if random.random() < 0.5:
+                if random.random() < 0.5 and sum(info.army.values()) < 250:
                     army_join(screen, x, y, info)
                 day += 1
 

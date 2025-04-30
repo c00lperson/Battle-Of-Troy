@@ -247,7 +247,7 @@ def stay_base(screen, x, y, stat_info):
                     else:
                         addition = random.randint(-4, -1)
                         stat_info.modify_val('army', 'MORALE', addition)
-                        stat_info.hidden['luck'] -= 0.01
+                        stat_info.luck -= 0.01
                         display_text(screen, 'Everyone is mad at you.', 50, BLACK, None, x * 0.5, 250, 'center')
                         display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 310, 'center')
                         display_stats(screen, x, stat_info)
@@ -292,42 +292,42 @@ def armor(screen, x, y, stat_info):
             # check if a key has been pressed
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_a:
-                    if not stat_info.armor['HELMET']:
-                        stat_info.armor['HELMET'] = True
-                        stat_info.player['ARMOR'] += 20
+                    if not stat_info.armor['HELMET']['equipped']:
+                        stat_info.armor['HELMET']['equipped'] = True
+                        stat_info.player['ARMOR'] += stat_info.armor['HELMET']['lvl']
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_b:
-                    if not stat_info.armor['BREASTPLATE']:
-                        stat_info.armor['BREASTPLATE'] = True
-                        stat_info.player['ARMOR'] += 30
+                    if not stat_info.armor['BREASTPLATE']['equipped']:
+                        stat_info.armor['BREASTPLATE']['equipped'] = True
+                        stat_info.player['ARMOR'] += stat_info.armor['BREASTPLATE']['lvl']
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_c:
-                    if not stat_info.armor['SHIELD']:
-                        stat_info.armor['SHIELD'] = True
-                        stat_info.player['ARMOR'] += 40
+                    if not stat_info.armor['SHIELD']['equipped']:
+                        stat_info.armor['SHIELD']['equipped'] = True
+                        stat_info.player['ARMOR'] += stat_info.armor['SHIELD']['lvl']
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_d:
-                    if not stat_info.weapons['SPEAR'] and not item_chosen:
-                        stat_info.weapons['SPEAR'] = True
-                        if stat_info.player['STRENGTH'] <= 80:
-                            stat_info.player['STRENGTH'] += 20
+                    if not stat_info.weapons['SPEAR']['equipped'] and not item_chosen:
+                        item_chosen = True
+                        stat_info.weapons['SPEAR']['equipped'] = True
+                        stat_info.modify_val('player', 'STRENGTH', stat_info.weapons['SPEAR']['skill'])
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_e:
-                    if not stat_info.weapons['SWORD'] and not item_chosen:
-                        stat_info.weapons['SWORD'] = True
-                        if stat_info.player['STRENGTH'] <= 80:
-                            stat_info.player['STRENGTH'] += 20
+                    if not stat_info.weapons['SWORD']['equipped'] and not item_chosen:
+                        item_chosen = True
+                        stat_info.weapons['SWORD']['equipped'] = True
+                        stat_info.modify_val('player', 'STRENGTH', stat_info.weapons['SWORD']['skill'])
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_d:
-                    if not stat_info.weapons['BOW'] and not item_chosen:
-                        stat_info.weapons['BOW'] = True
-                        if stat_info.player['STRENGTH'] <= 80:
-                            stat_info.player['STRENGTH'] += 20
+                    if not stat_info.weapons['BOW']['equipped'] and not item_chosen:
+                        item_chosen = True
+                        stat_info.weapons['BOW']['equipped'] = True
+                        stat_info.modify_val('player', 'STRENGTH', stat_info.weapons['BOW']['skill'])
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_SPACE:
@@ -531,8 +531,14 @@ def day_end(screen, x, y, stat_info):
                 if event.key == pg.K_a:
                     text_rect = pg.Rect(0, 300, x, 130)
                     pg.draw.rect(screen, LAVENDER, text_rect)
-                    display_text(screen, 'Test?', 50, BLACK, None, x * 0.5, 350, 'center')
+                    god = random.choice(stat_info.favorable_gods.keys())
+                    display_text(screen, f'You sacrificed a hecatomb for {god}', 50, BLACK, None, x * 0.5, 350,
+                                 'center')
                     # Pick random god to sacrifice to and then make their favor true and add to luck
+                    if stat_info.favorable_gods[god]:
+                        stat_info.luck += 0.02
+                    else:
+                        stat_info.favorable_gods[god] = True
 
                 if event.key == pg.K_b:
                     text_rect = pg.Rect(0, 300, x, 130)
