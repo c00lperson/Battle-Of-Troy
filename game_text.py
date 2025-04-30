@@ -36,6 +36,11 @@ XENIA = {'vgood' : [],
                 'vbad' : []}
 
 # TEXT FOR ACTIONS AT END OF DAY
+RESULTS = {'vgood' : [],
+                'good' : [],
+                'bad' : [],
+                'vbad' : []}
+
 FEAST = {'vgood' : [],
                 'good' : [],
                 'bad' : [],

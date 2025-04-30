@@ -22,6 +22,10 @@ class GameStats:
                         'BOW' : False}
 
         # Default luck is 50%, no gods in favor at game start
+        self.favorable_gods = {}
+        self.neutral_gods = {}
+        self.unfavorable_gods = {}
+
         self.hidden = {'luck' : 0.5,
                        'Hera' : False,
                        'Athena' : False,
@@ -36,6 +40,13 @@ class GameStats:
                        'Apollo' : False,
                        'Poseidon' : False,
                        'Ares' : False}
+
+        self.armies = ['Boeotians',
+                       'Minyans',
+                       'Phocēans',
+                       'Aetolians',
+                       'Rhodians',
+                       'Symians']
 
     def modify_val(self, stat_type, name, val):
         if stat_type == 'player':
@@ -59,5 +70,7 @@ class GameStats:
             vals = sum(self.player.values())
         elif stat_type == 'army':
             vals = sum(self.army.values())
+        elif stat_type == 'overall':
+            vals = sum(self.player.values()) + sum(self.army.values())
         chance = (vals * self.hidden['luck']) / 100
         return random.random() <= chance

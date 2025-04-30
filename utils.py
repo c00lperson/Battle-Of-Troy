@@ -35,7 +35,9 @@ MENU_LISTS = { 'START' : ["Press 'G' to start the game", "Press 'R' to see the r
                'WEAPON' : ['D. Spear', 'E. Sword', 'F. Bow'],
                'END' : ['A. Sacrifice a hecatomb', 'B. Have a feast', 'C. War council', 'D. Talk to Nestor'],
                'DECISION' : ['A. Accompany him', 'B. go to sleep'],
-               'EXPEDITION' : ['A. Look for battle plans', 'B. Attack!', 'C. Steal Resources', 'D. Kidnap someone']}
+               'EXPEDITION' : ['A. Look for battle plans', 'B. Attack!', 'C. Steal Resources', 'D. Kidnap someone'],
+               'XENIA' : ['A. Exchange armor', 'B. ATTACK!'],
+               'BATTLE' : ['A. FIGHT!', 'B. Supplicate', 'C. Pray to the gods', 'D. Run away']}
 
 MESSAGES = { 'start' : 'Hello this is a test',
              'character' : 'This is the character screen',

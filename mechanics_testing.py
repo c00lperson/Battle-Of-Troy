@@ -30,14 +30,11 @@ def main():
             day = 0
 
         elif scrn == 'start':
+            day = 1
             scrn = start(screen, x, y, info)
 
         elif scrn == 'rules':
             scrn = rules(screen, x, y)
-
-        elif scrn == 'character':
-            day = 1
-            scrn = character_custom(screen, x, y)
 
         elif scrn == 'day begin':
             scrn = day_beginning(screen, x, y, day, info)
@@ -51,19 +48,28 @@ def main():
         elif scrn == 'combat':
             scrn = combat(screen, x, y, info)
 
+        elif scrn == 'battle':
+            scrn = battle(screen, x, y, info)
+
+        elif scrn == 'xenia':
+            scrn = xenia(screen, x, y, info)
+
+        elif scrn == 'battle results':
+            scrn = battle_results(screen, x, y, info)
+
         elif scrn == 'day end':
             scrn = day_end(screen, x, y, info)
-
 
         elif scrn == 'night decision':
             scrn = night_decision(screen, x, y)
             if scrn == 'day begin':
+                if random.random() < 0.5:
+                    army_join(screen, x, y, info)
                 day += 1
 
         elif scrn == 'expedition':
             scrn = night_expedition(screen, x, y, info)
             day += 1
-
 
         for event in pg.event.get():
             # check if a key has been pressed

@@ -18,7 +18,7 @@ def start(screen, x, y, stat_info):
             # check if a key has been pressed
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_g:
-                    return 'character'
+                    return 'day begin'
 
                 if event.key == pg.K_r:
                     return 'rules'
@@ -29,15 +29,6 @@ def start(screen, x, y, stat_info):
                     # quit pygame
                     pg.quit()
                     quit()
-
-def character_custom(screen, x, y):
-    # create boolean variable to run game
-    running = True
-
-    screen.fill(BG)
-    pg.display.update()
-    display_text(screen, MESSAGES['character'], 50, BLACK, None, x // 2, y // 2, 'center')
-    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, (y // 2) + (y // 4), 'center')
 
     # loop while running is true
     while running:
@@ -79,9 +70,52 @@ def rules(screen, x, y):
                     pg.quit()
                     quit()
 
+def army_join(screen, x, y, stat_info):
+    # create boolean variable to run game
+    running = True
+
+    screen.fill(BG)
+    pg.display.update()
+    random.shuffle(stat_info.armies)
+    display_text(screen, f'An army of {stat_info.armies.pop()} has come to join you in battle!', 60, BLACK, None,
+                 x // 2, 150,
+                 'center')
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
+
+    warriors_add = random.randint(20, 30)
+    resources_add = random.randint(10, 20)
+    morale_add = random.randint(5, 10)
+
+    display_text(screen, f'+{morale_add} Morale \t +{warriors_add} Warriors \t +{resources_add} Resources',
+                 25, BLACK, None, x * 0.5, 410, 'center')
+
+    stat_info.modify_val('army', 'MORALE', morale_add)
+    stat_info.modify_val('army', 'WARRIORS', warriors_add)
+    stat_info.modify_val('army', 'RESOURCES', resources_add)
+
+    display_stats(screen, x, stat_info)
+
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+
+
 def day_beginning(screen, x, y, day_num, stat_info):
     # create boolean variable to run game
     running = True
+
     stat_info.player['ARMOR'] = 0
     screen.fill(BG)
     pg.display.update()
@@ -219,7 +253,7 @@ def stay_base(screen, x, y, stat_info):
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_SPACE:
-                    return 'day end'
+                    return 'battle results'
 
                 # if ESC key pressed, exit game
                 if event.key == pg.K_ESCAPE:
@@ -297,7 +331,11 @@ def armor(screen, x, y, stat_info):
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_SPACE:
-                    return 'combat'
+                    for k in stat_info.weapons.keys():
+                        stat_info.weapons[k] = False
+                    for k in stat_info.armor.keys():
+                        stat_info.armor[k] = False
+                    return random.choice(['battle', 'xenia'])
 
                 # if ESC key pressed, exit game
                 if event.key == pg.K_ESCAPE:
@@ -315,6 +353,145 @@ def combat(screen, x, y, stat_info):
     display_text(screen, 'READY, SET, FIGHT!', 60, BLACK, None, x // 2, 150, 'center')
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'battle results'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+
+def battle(screen, x, y, stat_info):
+    # create boolean variable to run game
+    running = True
+
+    screen.fill(BG)
+    pg.display.update()
+
+    display_text(screen, 'A TROJAN WARRIOR APPROACHES YOU', 60, BLACK, None, x // 2, 150, 'center')
+    display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
+    display_menu(screen, MENU_LISTS['BATTLE'], 50, BLACK, x * 0.5, y * 0.5, -80)
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
+    display_stats(screen, x, stat_info)
+
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'battle results'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+
+def xenia(screen, x, y, stat_info):
+    # create boolean variable to run game
+    running = True
+
+    screen.fill(BG)
+    pg.display.update()
+
+    display_text(screen, 'YOU ENCOUNTER A GUEST FRIEND DURING BATTLE', 60, BLACK, None, x // 2, 150, 'center')
+    display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
+    display_menu(screen, MENU_LISTS['XENIA'], 50, BLACK, x * 0.5, y * 0.5, -80)
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
+    display_stats(screen, x, stat_info)
+
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_a:
+                    if stat_info.get_success('pure luck'):
+                        addition = random.randint(1, 10)
+                        stat_info.modify_val('player', 'ARMOR', addition)
+
+                        display_text(screen, 'You exchanged armor and got a little upgrade!', 50, BLACK, None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+                        display_text(screen, f'+{addition} Armor', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+                    else:
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('player', 'ARMOR', addition)
+
+                        display_text(screen, 'You just got swindled :(', 50, BLACK, None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+                        display_text(screen, f'{addition} Armor', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                if event.key == pg.K_b:
+                    pass
+
+                if event.key == pg.K_SPACE:
+                    return 'battle results'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+def battle_results(screen, x, y, stat_info):
+    # create boolean variable to run game
+    running = True
+
+    screen.fill(BG)
+    pg.display.update()
+
+    display_text(screen, 'ANOTHER LONG DAY HAS COME TO AN END', 60, BLACK, None, x // 2, 150,
+                 'center')
+
+    morale_mod = 0
+    army_loss = 0
+    resources_loss = 0
+
+    if stat_info.get_success('army'):
+        morale_mod = random.randint(1, 10)
+        army_loss = random.randint(-15, -1)
+        resources_loss = random.randint(-10, -1)
+        display_text(screen, 'Good battle day!',50, BLACK, None, x * 0.5, 310, 'center')
+
+        display_text(screen, f'+{morale_mod} Morale \t {army_loss} Warriors \t {resources_loss} Resources',
+                     25, BLACK, None, x * 0.5, 410, 'center')
+
+    else:
+        morale_mod = random.randint(-20, -1)
+        army_loss = random.randint(-30, -10)
+        resources_loss = random.randint(-30, -10)
+
+        display_text(screen, 'Bad battle day.', 50, BLACK, None, x * 0.5, 310, 'center')
+
+        display_text(screen, f'{morale_mod} Morale \t {army_loss} Warriors \t {resources_loss} Resources',
+                     25, BLACK, None, x * 0.5, 410, 'center')
+
+    stat_info.modify_val('army', 'MORALE', morale_mod)
+    stat_info.modify_val('army', 'WARRIORS', army_loss)
+    stat_info.modify_val('army', 'RESOURCES', resources_loss)
+
+    display_stats(screen, x, stat_info)
+
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
+
     # loop while running is true
     while running:
         for event in pg.event.get():
@@ -342,6 +519,9 @@ def day_end(screen, x, y, stat_info):
     display_menu(screen, MENU_LISTS['END'],50, BLACK, x * 0.5, y * 0.5, -80)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
+
+
+
     # loop while running is true
     while running:
         for event in pg.event.get():
