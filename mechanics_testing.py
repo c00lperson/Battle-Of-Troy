@@ -26,17 +26,19 @@ def main():
     while running:
 
         if day > 14:
-            scrn = end(screen, x, y)
+            scrn = 'end_decision'
             day = 0
 
         elif scrn == 'start':
             day = 1
             scrn = start(screen, x, y, info)
+            army_join(screen, x, y, info)
+            halfway_done(screen, x, y)
 
-        elif scrn == 'rules':
-            scrn = rules(screen, x, y)
 
         elif scrn == 'day begin':
+            if day > 7:
+                halfway_done(screen, x, y)
             scrn = day_beginning(screen, x, y, day, info)
 
         elif scrn == 'stay':
@@ -63,6 +65,7 @@ def main():
         elif scrn == 'night decision':
             scrn = night_decision(screen, x, y)
             if scrn == 'day begin':
+
                 if random.random() < 0.5 and sum(info.army.values()) < 250:
                     army_join(screen, x, y, info)
                 day += 1
@@ -70,6 +73,12 @@ def main():
         elif scrn == 'expedition':
             scrn = night_expedition(screen, x, y, info)
             day += 1
+
+        elif scrn == 'death by medic':
+            scrn = death_by_medic(screen, x, y)
+
+        elif scrn == 'flee':
+            scrn = fled_the_scene(screen, x, y)
 
         for event in pg.event.get():
             # check if a key has been pressed

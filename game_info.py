@@ -45,7 +45,7 @@ class GameStats:
 
         self.armies = ['Boeotians',
                        'Minyans',
-                       'Phocēans',
+                       'Phoceans',
                        'Aetolians',
                        'Rhodians',
                        'Symians']
@@ -71,9 +71,11 @@ class GameStats:
             elif self.armor[name]['lvl'] < 0:
                 self.armor[name]['lvl'] = 0
 
-    def armor_off(self):
+    def equipment_off(self):
         for item in self.armor.keys():
             self.armor[item]['equipped'] = False
+        for item in self.weapons.keys():
+            self.weapons[item]['equipped'] = False
 
     def get_success(self, stat_type):
         vals = 0

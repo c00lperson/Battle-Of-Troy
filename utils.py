@@ -29,6 +29,8 @@ RECT_X_DEC_VALUE = 50
 
 MENU_LISTS = { 'START' : ["Press 'G' to start the game", "Press 'R' to see the rules"],
                'BEGINNING' : ["Go into combat: Press 'C'", "Stay at the base: Press 'B'"],
+               'BEGINNING OVER HALF' : ["Go into combat: Press 'C'", "Stay at the base: Press 'B'", "SACK THE CITY: "
+                                                                                                  "Press 'S'"],
                'BASE' : ['A. Seek medical attention', 'B. Attend to wounded soldiers', 'C. Practice fighting',
                           'D. Entertain', 'E. Do nothing'],
                'ARMOR' : ['A. Helmet', 'B. Breastplate', 'C. Shield'],
@@ -37,7 +39,8 @@ MENU_LISTS = { 'START' : ["Press 'G' to start the game", "Press 'R' to see the r
                'DECISION' : ['A. Accompany him', 'B. go to sleep'],
                'EXPEDITION' : ['A. Look for battle plans', 'B. Attack!', 'C. Steal Resources', 'D. Kidnap someone'],
                'XENIA' : ['A. Exchange armor', 'B. ATTACK!'],
-               'BATTLE' : ['A. FIGHT!', 'B. Supplicate', 'C. Pray to the gods', 'D. Run away']}
+               'BATTLE' : ['A. FIGHT!', 'B. Supplicate', 'C. Pray to the gods', 'D. Run away'],
+               'ENDING' : ['A. Take them down!!!', 'B. Run away']}
 
 MESSAGES = { 'start' : 'Hello this is a test',
              'character' : 'This is the character screen',

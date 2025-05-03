@@ -8,28 +8,35 @@ def start(screen, x, y, stat_info):
 
     change_screen_color(screen, BG)
 
-    display_text(screen, 'WELCOME TO THE GAME', 50, BLACK, None, x // 2, y // 2, 'center')
-    display_menu(screen, MENU_LISTS['START'], 50, BLACK, x//2, (y // 2) + (y // 4), -60)
+    start_img = pg.transform.scale_by(pg.image.load("procession-horse.png"), 1.5)
+    start_rect = start_img.get_rect()
+    start_rect.center = (x * 0.5, y * 0.5)
+    screen.blit(start_img, start_rect)
+
+    s1 = pg.Surface((400, 75))
+    s1.set_alpha(128)
+    s1.fill((255, 255, 255))
+    screen.blit(s1, (x // 2 - 200, y // 4 - 40))
+
+    s2 = pg.Surface((1000, 120))
+    s2.set_alpha(128)
+    s2.fill((255, 255, 255))
+    screen.blit(s2, (x // 2 - 500, y // 2 - 60))
+
+    s3 = pg.Surface((600, 75))
+    s3.set_alpha(128)
+    s3.fill((255, 255, 255))
+    screen.blit(s3, (x // 2 - 300, y *0.9 - 40))
+
+
+    display_text(screen, 'WELCOME TO', 50, BLACK, None, x // 2, y // 4, 'center')
+
+    display_text(screen, 'THE BATTLE OF TROY', 100, BLACK, None, x // 2, y // 2, 'center')
+
+    display_text(screen, 'PRESS SPACE TO START', 50, BLACK, None, x // 2, y * 0.9, 'center')
+
 
     pg.display.update()
-    # loop while running is true
-    while running:
-        for event in pg.event.get():
-            # check if a key has been pressed
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_g:
-                    return 'day begin'
-
-                if event.key == pg.K_r:
-                    return 'rules'
-
-                # if ESC key pressed, exit game
-                if event.key == pg.K_ESCAPE:
-                    running = False
-                    # quit pygame
-                    pg.quit()
-                    quit()
-
     # loop while running is true
     while running:
         for event in pg.event.get():
@@ -45,30 +52,6 @@ def start(screen, x, y, stat_info):
                     pg.quit()
                     quit()
 
-def rules(screen, x, y):
-    # create boolean variable to run game
-    running = True
-
-    screen.fill(BG)
-    pg.display.update()
-    display_text(screen, MESSAGES['rules'], 50, BLACK, None, x // 2, y // 2, 'center')
-    display_text(screen, MESSAGES['back'], 50, BLACK, None, x // 2, (y // 2) + (y // 4), 'center')
-    list_items = ['A. This is a test', 'B. For displaying lists', 'C. I hope it works!']
-    display_menu(screen, list_items, 30, BLACK, 200, 100, -40)
-    # loop while running is true
-    while running:
-        for event in pg.event.get():
-            # check if a key has been pressed
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_b:
-                    return 'start'
-
-                # if ESC key pressed, exit game
-                if event.key == pg.K_ESCAPE:
-                    running = False
-                    # quit pygame
-                    pg.quit()
-                    quit()
 
 def army_join(screen, x, y, stat_info):
     # create boolean variable to run game
@@ -76,6 +59,28 @@ def army_join(screen, x, y, stat_info):
 
     screen.fill(BG)
     pg.display.update()
+
+
+    army_img = pg.transform.scale_by(pg.image.load("ships2.png"), 1.85)
+    army_rect = army_img.get_rect()
+    army_rect.topleft = (0, 0)
+    screen.blit(army_img, army_rect)
+
+    s1 = pg.Surface((400, 75))
+    s1.set_alpha(128)
+    s1.fill((255, 255, 255))
+    screen.blit(s1, (x // 2 - 200, y // 4 - 40))
+
+    s2 = pg.Surface((1000, 120))
+    s2.set_alpha(128)
+    s2.fill((255, 255, 255))
+    screen.blit(s2, (x // 2 - 500, y // 2 - 60))
+
+    s3 = pg.Surface((600, 75))
+    s3.set_alpha(128)
+    s3.fill((255, 255, 255))
+    screen.blit(s3, (x // 2 - 300, y * 0.9 - 40))
+
     random.shuffle(stat_info.armies)
     display_text(screen, f'An army of {stat_info.armies.pop()} has come to join you in battle!', 60, BLACK, None,
                  x // 2, 150,
@@ -87,13 +92,12 @@ def army_join(screen, x, y, stat_info):
     morale_add = random.randint(5, 10)
 
     display_text(screen, f'+{morale_add} Morale \t +{warriors_add} Warriors \t +{resources_add} Resources',
-                 25, BLACK, None, x * 0.5, 410, 'center')
+                 40, BLACK, None, x * 0.5, 410, 'center')
 
     stat_info.modify_val('army', 'MORALE', morale_add)
     stat_info.modify_val('army', 'WARRIORS', warriors_add)
     stat_info.modify_val('army', 'RESOURCES', resources_add)
 
-    display_stats(screen, x, stat_info)
 
     # loop while running is true
     while running:
@@ -122,7 +126,11 @@ def day_beginning(screen, x, y, day_num, stat_info):
     display_text(screen, 'DAY ' + str(day_num), 100, BLACK, None, x // 2, 150, 'center')
     display_text(screen, 'What will you do today?', 60, BLACK, None, x // 2, 250, 'center')
 
-    display_menu(screen, MENU_LISTS['BEGINNING'], 60, BLACK, x*0.5, y * 0.5, -200)
+    if day_num > 7:
+        display_menu(screen, MENU_LISTS['BEGINNING OVER HALF'], 60, BLACK, x*0.5, y * 0.4, -200)
+    else:
+        display_menu(screen, MENU_LISTS['BEGINNING'], 60, BLACK, x*0.5, y * 0.5, -200)
+
     display_stats(screen, x, stat_info)
     # loop while running is true
     while running:
@@ -134,6 +142,52 @@ def day_beginning(screen, x, y, day_num, stat_info):
 
                 if event.key == pg.K_b:
                     return 'stay'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+def halfway_done(screen, x, y):
+    # create boolean variable to run game
+    running = True
+    change_screen_color(screen, BG)
+
+    battle_img = pg.transform.scale_by(pg.image.load("fall-of-troy.png"), 1.5)
+    battle_rect = battle_img.get_rect()
+    battle_rect.center = (x * 0.5, y * 0.5)
+    screen.blit(battle_img, battle_rect)
+
+    s1 = pg.Surface((400, 75))
+    s1.set_alpha(128)
+    s1.fill((255, 255, 255))
+    screen.blit(s1, (x // 2 - 200, y // 4 - 40))
+
+    s2 = pg.Surface((1000, 120))
+    s2.set_alpha(128)
+    s2.fill((255, 255, 255))
+    screen.blit(s2, (x // 2 - 500, y // 2 - 60))
+
+    s3 = pg.Surface((600, 75))
+    s3.set_alpha(128)
+    s3.fill((255, 255, 255))
+    screen.blit(s3, (x // 2 - 300, y * 0.9 - 40))
+
+    display_text(screen, 'YOUR TIME IS OVER HALFWAY DONE', 80, BLACK, None, x // 2, y // 3, 'center')
+    display_text(screen, 'YOU CAN NOW ATTEMPT TO SACK TROY', 50, BLACK, None, x // 2, y // 2, 'center')
+    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
+
+
+
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return
 
                 # if ESC key pressed, exit game
                 if event.key == pg.K_ESCAPE:
@@ -175,6 +229,8 @@ def stay_base(screen, x, y, stat_info):
                             display_text(screen, f'+{addition} Health', 20, BLACK, None, x * 0.5, 310, 'center')
                             display_stats(screen, x, stat_info)
                         else:
+                            if stat_info.army['MORALE'] <= 10:
+                                return 'death by medic'
                             addition = random.randint(-15, -1)
                             stat_info.modify_val('player', 'HEALTH', addition)
 
@@ -331,10 +387,7 @@ def armor(screen, x, y, stat_info):
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_SPACE:
-                    for k in stat_info.weapons.keys():
-                        stat_info.weapons[k] = False
-                    for k in stat_info.armor.keys():
-                        stat_info.armor[k] = False
+                    stat_info.equipment_off()
                     return random.choice(['battle', 'xenia'])
 
                 # if ESC key pressed, exit game
@@ -531,7 +584,7 @@ def day_end(screen, x, y, stat_info):
                 if event.key == pg.K_a:
                     text_rect = pg.Rect(0, 300, x, 130)
                     pg.draw.rect(screen, LAVENDER, text_rect)
-                    god = random.choice(stat_info.favorable_gods.keys())
+                    god = random.choice(list(stat_info.favorable_gods.keys()))
                     display_text(screen, f'You sacrificed a hecatomb for {god}', 50, BLACK, None, x * 0.5, 350,
                                  'center')
                     # Pick random god to sacrifice to and then make their favor true and add to luck
@@ -751,6 +804,189 @@ def night_expedition(screen, x, y, stat_info):
 
                 if event.key == pg.K_SPACE:
                     return 'day begin'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+# create boolean variable to run game
+    running = True
+
+    change_screen_color(screen, BG)
+    display_text(screen, 'The medic was harboring a secret grudge against you and stabbed you to death!', 30, BLACK,
+                 None, x // 2, y // 2, 'center')
+    display_text(screen, 'Press ESC to exit, SPACE to return to main menu', 50, BLACK, None, x // 2, (y // 2) + (y //
+                                                                                                                 4),
+                 'center')
+    pg.display.update()
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'start'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+def end_decision(screen, x, y, stat_info):
+    # create boolean variable to run game
+    running = True
+
+    change_screen_color(screen, BG)
+    display_text(screen, 'Your time is up! What will you do?', 30, BLACK,
+                 None, x // 2, y // 2, 'center')
+    display_menu(screen, MENU_LISTS['ENDING'], 30, BLACK, x//2, y//2, -40)
+
+    pg.display.update()
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_a:
+                    pass
+                if event.key == pg.K_b:
+                    return 'flee'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+
+def death_by_medic(screen, x, y):
+    # create boolean variable to run game
+    running = True
+
+    change_screen_color(screen, BG)
+    display_text(screen, 'The medic was harboring a secret grudge against you and stabbed you to death!', 30, BLACK,
+                 None, x // 2, y // 2, 'center')
+    display_text(screen, 'Press ESC to exit, SPACE to return to main menu', 50, BLACK, None, x // 2, (y // 2) + (y //
+                                                                                                                 4),
+                 'center')
+    pg.display.update()
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'start'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+def fled_the_scene(screen, x, y):
+    # create boolean variable to run game
+    running = True
+
+    change_screen_color(screen, BG)
+    display_text(screen, 'You secretly sailed away in the middle of the night. What a coward!', 30, BLACK, None,
+                 x // 2, y // 2, 'center')
+    display_text(screen, 'Press ESC to exit, SPACE to return to main menu', 50, BLACK, None, x // 2, (y // 2) + (y //
+                                                                                                                 4),
+                 'center')
+    pg.display.update()
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'start'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+def died_in_battle(screen, x, y):
+    # create boolean variable to run game
+    running = True
+
+    change_screen_color(screen, BG)
+    display_text(screen, 'RIP', 50, BLACK, None, x // 2, y // 2, 'center')
+    display_text(screen, 'Press ESC to exit, SPACE to return to main menu', 50, BLACK, None, x // 2, (y // 2) + (y //
+                                                                                                                 4),
+                 'center')
+    pg.display.update()
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'start'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+def death_by_wine(screen, x, y):
+    pass
+
+def total_win(screen, x, y):
+    # create boolean variable to run game
+    running = True
+
+    change_screen_color(screen, BG)
+    display_text(screen, 'BYEEEEEE', 50, BLACK, None, x // 2, y // 2, 'center')
+    display_text(screen, 'Press ESC to exit, SPACE to return to main menu', 50, BLACK, None, x // 2, (y // 2) + (y //
+                                                                                                                 4),
+                 'center')
+    pg.display.update()
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'start'
+
+                # if ESC key pressed, exit game
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    # quit pygame
+                    pg.quit()
+                    quit()
+
+def army_lost(screen, x, y):
+    # create boolean variable to run game
+    running = True
+
+    change_screen_color(screen, BG)
+    display_text(screen, 'BYEEEEEE', 50, BLACK, None, x // 2, y // 2, 'center')
+    display_text(screen, 'Press ESC to exit, SPACE to return to main menu', 50, BLACK, None, x // 2, (y // 2) + (y //
+                                                                                                                 4),
+                 'center')
+    pg.display.update()
+    # loop while running is true
+    while running:
+        for event in pg.event.get():
+            # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    return 'start'
 
                 # if ESC key pressed, exit game
                 if event.key == pg.K_ESCAPE:
