@@ -2,6 +2,7 @@ import pygame as pg
 
 from game_info import GameStats
 from screens import *
+from ending_screens import *
 
 
 def main():
@@ -32,8 +33,7 @@ def main():
         elif scrn == 'start':
             day = 1
             scrn = start(screen, x, y, info)
-            army_join(screen, x, y, info)
-            halfway_done(screen, x, y)
+            fled_the_scene(screen, x, y)
 
 
         elif scrn == 'day begin':
