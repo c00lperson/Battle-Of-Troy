@@ -40,7 +40,18 @@ MENU_LISTS = { 'START' : ["Press 'G' to start the game", "Press 'R' to see the r
                'EXPEDITION' : ['A. Look for battle plans', 'B. Attack!', 'C. Steal Resources', 'D. Kidnap someone'],
                'XENIA' : ['A. Exchange armor', 'B. ATTACK!'],
                'BATTLE' : ['A. FIGHT!', 'B. Supplicate', 'C. Pray to the gods', 'D. Run away'],
-               'ENDING' : ['A. Take them down!!!', 'B. Run away']}
+               'ENDING' : ['A. ATTACK THE TROJANS!!!', 'B. Run away']}
+
+ATTACK = {'SPEAR' : 'You threw your spear and hit your opponent in the torso!',
+          'SWORD' : 'You swung your sword and sliced your opponent!',
+          'BOW' : 'You shot your opponent in the leg!'}
+
+ATTACK_FAIL = ['Your opponent dodged your attack and stabbed you',
+               'You tried to block your opponent\'s arrow but you failed',
+               'You tried your best to attack, but your opponent is much stronger than you']
+
+ENTERTAIN = ['You sang a beautiful song!',
+             'You played the lyre and everyone loved it!']
 
 MESSAGES = { 'start' : 'Hello this is a test',
              'character' : 'This is the character screen',

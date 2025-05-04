@@ -43,7 +43,18 @@ def main():
             # surprise_attack(screen, x, y)
             # army_retreat(screen, x, y)
             # army_won_player_died(screen, x, y)
-
+            # halfway_done(screen, x, y)
+            # army_join(screen, x, y, info)
+            # stay_base(screen, x, y, info)
+            armor(screen, x, y, info)
+            # battle(screen, x, y, info)
+            # xenia(screen, x, y, info)
+            # battle_results(screen, x, y, info)
+            # day_end(screen, x, y, info)
+            # night_expedition(screen, x, y, info)
+            # day_beginning(screen, x, y, day, info)
+            # night_decision(screen, x, y)
+            # end_decision(screen, x, y, info)
 
 
         elif scrn == 'day begin':
@@ -56,9 +67,6 @@ def main():
 
         elif scrn == 'armor':
             scrn = armor(screen, x, y, info)
-
-        elif scrn == 'combat':
-            scrn = combat(screen, x, y, info)
 
         elif scrn == 'battle':
             scrn = battle(screen, x, y, info)
@@ -73,7 +81,11 @@ def main():
             scrn = day_end(screen, x, y, info)
 
         elif scrn == 'night decision':
-            scrn = night_decision(screen, x, y)
+            if info.player['HEALTH'] > 10:
+                scrn = night_decision(screen, x, y)
+            else:
+                scrn = 'day begin'
+
             if scrn == 'day begin':
 
                 if random.random() < 0.5 and sum(info.army.values()) < 250:
@@ -81,6 +93,7 @@ def main():
                 day += 1
 
         elif scrn == 'expedition':
+            armor(screen, x, y, info)
             scrn = night_expedition(screen, x, y, info)
             day += 1
 
@@ -90,11 +103,32 @@ def main():
         elif scrn == 'death by medic':
             scrn = death_by_medic(screen, x, y)
 
+        elif scrn == 'died in battle':
+            scrn = died_in_battle(screen, x, y)
+
+        elif scrn == 'death by wine':
+            scrn = death_by_wine(screen, x, y)
+
+        elif scrn == 'death in practice':
+            scrn = death_by_fighting_practice(screen, x, y)
+
         elif scrn == 'flee':
             scrn = fled_the_scene(screen, x, y)
 
         elif scrn == 'total win':
             scrn = total_win(screen, x, y)
+
+        elif scrn == 'total loss':
+            scrn = total_loss(screen, x, y)
+
+        elif scrn == 'surprise attack':
+            scrn = surprise_attack(screen, x, y)
+
+        elif scrn == 'army retreat':
+            scrn = army_retreat(screen, x, y)
+
+        elif scrn == 'army win player died':
+            scrn = army_won_player_died(screen, x, y)
 
         for event in pg.event.get():
             # check if a key has been pressed
@@ -106,10 +140,6 @@ def main():
                     # quit pygame
                     pg.quit()
                     quit()
-
-
-
-
 
 if __name__ == '__main__':
     main()

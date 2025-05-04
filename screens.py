@@ -73,6 +73,12 @@ def army_join(screen, x, y, stat_info):
     stat_info.modify_val('army', 'WARRIORS', warriors_add)
     stat_info.modify_val('army', 'RESOURCES', resources_add)
 
+    # possibility to get better armor
+    if stat_info.get_success('pure luck'):
+        stat_info.modify_val('armor', 'HELMET', random.randint(1, 10))
+        stat_info.modify_val('armor', 'BREASTPLATE', random.randint(1, 10))
+        stat_info.modify_val('armor', 'SHIELD', random.randint(1, 10))
+
     # loop while running is true
     while running:
         for event in pg.event.get():
@@ -96,13 +102,13 @@ def day_beginning(screen, x, y, day_num, stat_info):
     stat_info.player['ARMOR'] = 0
     screen.fill(BG)
     pg.display.update()
-    display_text(screen, 'DAY ' + str(day_num), 100, BLACK, None, x // 2, 150, 'center')
-    display_text(screen, 'What will you do today?', 60, BLACK, None, x // 2, 250, 'center')
+    display_text(screen, 'DAY ' + str(day_num), 100, BLACK, None, x // 2, y // 4, 'center')
+    display_text(screen, 'What will you do today?', 60, BLACK, None, x // 2, y // 3, 'center')
 
     if day_num > 7:
-        display_menu(screen, MENU_LISTS['BEGINNING OVER HALF'], 60, BLACK, x*0.5, y * 0.4, -200)
+        display_menu(screen, MENU_LISTS['BEGINNING OVER HALF'], 70, BLACK, x // 3.7, y // 2, -180)
     else:
-        display_menu(screen, MENU_LISTS['BEGINNING'], 60, BLACK, x*0.5, y * 0.5, -200)
+        display_menu(screen, MENU_LISTS['BEGINNING'], 70, BLACK, x // 3.7, y // 2, -180)
 
     display_stats(screen, x, stat_info)
     # loop while running is true
@@ -190,7 +196,7 @@ def stay_base(screen, x, y, stat_info):
                             addition = random.randint(1, 15)
                             stat_info.modify_val('player', 'HEALTH', addition)
 
-                            display_text(screen, 'They helped! Yay!', 50, BLACK, None, x * 0.5, 250, 'center')
+                            display_text(screen, 'The medic helped you!', 50, BLACK, None, x * 0.5, 250, 'center')
                             display_text(screen, f'+{addition} Health', 20, BLACK, None, x * 0.5, 310, 'center')
                             display_stats(screen, x, stat_info)
                         else:
@@ -199,7 +205,7 @@ def stay_base(screen, x, y, stat_info):
                             addition = random.randint(-15, -1)
                             stat_info.modify_val('player', 'HEALTH', addition)
 
-                            display_text(screen, 'They did not help! oh no!!', 50, BLACK, None, x * 0.5, 250, 'center')
+                            display_text(screen, 'The medic sneezed while giving you stitches and accidentally stabbed your arm :(', 50, BLACK, None, x * 0.5, 250, 'center')
                             display_text(screen, f'{addition} Health', 25, BLACK, None, x * 0.5, 310, 'center')
                             display_stats(screen, x, stat_info)
 
@@ -210,14 +216,17 @@ def stay_base(screen, x, y, stat_info):
                         addition = random.randint(1, 10)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'You helped! Yay!', 50, BLACK, None, x * 0.5, 250, 'center')
+                        display_text(screen, 'You were a great help to the wounded soldiers!', 50, BLACK, None,
+                                     x * 0.5, 250, 'center')
                         display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 310, 'center')
                         display_stats(screen, x, stat_info)
                     else:
                         addition = random.randint(-10, -1)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'You did not help! oh no!!', 50, BLACK, None, x * 0.5, 250, 'center')
+                        display_text(screen, 'You tried to help the medics, but you just kept getting in the way', 50,
+                                     BLACK,
+                                     None, x * 0.5, 250, 'center')
                         display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 310, 'center')
                         display_stats(screen, x, stat_info)
 
@@ -228,16 +237,26 @@ def stay_base(screen, x, y, stat_info):
                         addition = random.randint(1, 10)
                         stat_info.modify_val('player', 'STRENGTH', addition)
 
-                        display_text(screen, 'You got better! Yay!', 50, BLACK, None, x * 0.5, 250, 'center')
+                        weapon = random.choice(list(stat_info.weapons.keys()))
+
+                        display_text(screen, f'You practiced with your {weapon} and your skills improved!', 50, BLACK,
+                                     None, x * 0.5, 250, 'center')
                         display_text(screen, f'+{addition} Strength', 25, BLACK, None, x * 0.5, 310, 'center')
                         display_stats(screen, x, stat_info)
+
+                        stat_info.weapons[weapon]['skill'] += random.randint(1, 10)
+
                     else:
                         addition = random.randint(-10, -1)
-                        stat_info.modify_val('player', 'STRENGTH', addition)
+                        stat_info.modify_val('player', 'HEALTH', addition)
 
-                        display_text(screen, 'You got worse! oh no!!', 50, BLACK, None, x * 0.5, 250, 'center')
-                        display_text(screen, f'{addition} Strength', 25, BLACK, None, x * 0.5, 310, 'center')
+                        display_text(screen, 'Your clumsiness got the best of you :(', 50, BLACK, None, x * 0.5, 250,
+                                     'center')
+                        display_text(screen, f'{addition} Health', 25, BLACK, None, x * 0.5, 310, 'center')
                         display_stats(screen, x, stat_info)
+
+                        if stat_info.player['HEALTH'] == 0:
+                            return 'death in practice'
 
                 if event.key == pg.K_d:
                     text_rect = pg.Rect(0, 200, x, 130)
@@ -246,14 +265,15 @@ def stay_base(screen, x, y, stat_info):
                         addition = random.randint(1, 6)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'Everyone liked it! Yay!', 50, BLACK, None, x * 0.5, 250, 'center')
+                        display_text(screen, random.choice(ENTERTAIN), 50, BLACK, None, x * 0.5, 250, 'center')
                         display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 310, 'center')
                         display_stats(screen, x, stat_info)
                     else:
                         addition = random.randint(-6, -1)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'They did not like it! oh no!!', 50, BLACK, None, x * 0.5, 250, 'center')
+                        display_text(screen, 'Everyone hated your performance.', 50, BLACK, None, x * 0.5, 250,
+                                     'center')
                         display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 310, 'center')
                         display_stats(screen, x, stat_info)
 
@@ -314,45 +334,105 @@ def armor(screen, x, y, stat_info):
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_a:
                     if not stat_info.armor['HELMET']['equipped']:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You equipped a helmet! +{stat_info.armor['HELMET']['lvl']} Armor',
+                                     40, BLACK, None, x // 2, 230, 'center')
+                        
                         stat_info.armor['HELMET']['equipped'] = True
-                        stat_info.player['ARMOR'] += stat_info.armor['HELMET']['lvl']
+                        stat_info.modify_val('player', 'ARMOR', stat_info.armor['HELMET']['lvl'])
                         display_stats(screen, x, stat_info)
+                    else:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You already equipped a helmet',
+                                     40, BLACK, None, x // 2, 230, 'center')
 
                 if event.key == pg.K_b:
                     if not stat_info.armor['BREASTPLATE']['equipped']:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You equipped a breastplate! +{stat_info.armor['BREASTPLATE']['lvl']} '
+                                             f'Armor',
+                                     40, BLACK, None, x // 2, 230, 'center')
+                        
                         stat_info.armor['BREASTPLATE']['equipped'] = True
-                        stat_info.player['ARMOR'] += stat_info.armor['BREASTPLATE']['lvl']
+                        stat_info.modify_val('player', 'ARMOR', stat_info.armor['BREASTPLATE']['lvl'])
                         display_stats(screen, x, stat_info)
+                    else:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You already equipped a breastplate',
+                                     40, BLACK, None, x // 2, 230, 'center')
 
                 if event.key == pg.K_c:
                     if not stat_info.armor['SHIELD']['equipped']:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You equipped a shield! +{stat_info.armor['SHIELD']['lvl']} Armor',
+                                     40, BLACK, None, x // 2, 230, 'center')
+                        
                         stat_info.armor['SHIELD']['equipped'] = True
-                        stat_info.player['ARMOR'] += stat_info.armor['SHIELD']['lvl']
+                        stat_info.modify_val('player', 'ARMOR', stat_info.armor['SHIELD']['lvl'])
                         display_stats(screen, x, stat_info)
+                    else:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You already equipped a shield',
+                                     40, BLACK, None, x // 2, 230, 'center')
 
                 if event.key == pg.K_d:
                     if not stat_info.weapons['SPEAR']['equipped'] and not item_chosen:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You equipped a spear! +{stat_info.weapons['SPEAR']['skill']} Strength',
+                                     40, BLACK, None, x // 2, 230, 'center')
+                        
                         item_chosen = True
                         stat_info.weapons['SPEAR']['equipped'] = True
                         stat_info.modify_val('player', 'STRENGTH', stat_info.weapons['SPEAR']['skill'])
                         display_stats(screen, x, stat_info)
+                    else:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You already equipped a weapon',
+                                     40, BLACK, None, x // 2, 230, 'center')
 
                 if event.key == pg.K_e:
                     if not stat_info.weapons['SWORD']['equipped'] and not item_chosen:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You equipped a sword! +{stat_info.weapons['SWORD']['skill']} Strength',
+                                     40, BLACK, None, x // 2, 230, 'center')
+
                         item_chosen = True
                         stat_info.weapons['SWORD']['equipped'] = True
                         stat_info.modify_val('player', 'STRENGTH', stat_info.weapons['SWORD']['skill'])
                         display_stats(screen, x, stat_info)
+                    else:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You already equipped a weapon',
+                                     40, BLACK, None, x // 2, 230, 'center')
 
-                if event.key == pg.K_d:
+                if event.key == pg.K_f:
                     if not stat_info.weapons['BOW']['equipped'] and not item_chosen:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You equipped a bow! +{stat_info.weapons['BOW']['skill']} Strength',
+                                     40, BLACK, None, x // 2, 230, 'center')
+
                         item_chosen = True
                         stat_info.weapons['BOW']['equipped'] = True
                         stat_info.modify_val('player', 'STRENGTH', stat_info.weapons['BOW']['skill'])
                         display_stats(screen, x, stat_info)
+                    else:
+                        text_rect = pg.Rect(0, 200, x, 60)
+                        pg.draw.rect(screen, LAVENDER, text_rect)
+                        display_text(screen, f'You already equipped a weapon',
+                                     40, BLACK, None, x // 2, 230, 'center')
 
                 if event.key == pg.K_SPACE:
-                    stat_info.equipment_off()
                     return random.choice(['battle', 'xenia'])
 
                 # if ESC key pressed, exit game
@@ -370,9 +450,9 @@ def battle(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
 
-    paris_img = pg.transform.scale_by(pg.image.load("venus-rescues-paris.png"), 1)
+    paris_img = pg.transform.scale_by(pg.image.load("venus-rescues-paris.png"), 0.5)
     paris_rect = paris_img.get_rect()
-    paris_rect.center = (x // 4, y * 0.6)
+    paris_rect.center = (x // 4, y * 0.65)
     screen.blit(paris_img, paris_rect)
 
     display_text(screen, 'A TROJAN WARRIOR APPROACHES YOU', 60, BLACK, None, x // 2, 150, 'center')
@@ -386,6 +466,162 @@ def battle(screen, x, y, stat_info):
         for event in pg.event.get():
             # check if a key has been pressed
             if event.type == pg.KEYDOWN:
+                if event.key == pg.K_a:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('player'):
+                        if stat_info.weapons['SPEAR']['equipped']:
+                            addition_m = random.randint(1, 5)
+                            stat_info.modify_val('army', 'MORALE', addition_m)
+
+                            display_text(screen, ATTACK['SPEAR'], 50, BLACK, None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+                            display_text(screen, f'+{addition_m} Morale', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                        elif stat_info.weapons['SWORD']['equipped']:
+                            addition_m = random.randint(1, 5)
+                            stat_info.modify_val('army', 'MORALE', addition_m)
+
+                            display_text(screen, ATTACK['SWORD'], 50, BLACK, None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+                            display_text(screen, f'+{addition_m} Morale', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                        elif stat_info.weapons['BOW']['equipped']:
+                            addition_m = random.randint(1, 5)
+                            stat_info.modify_val('army', 'MORALE', addition_m)
+
+                            display_text(screen, ATTACK['BOW'], 50, BLACK, None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+                            display_text(screen, f'+{addition_m} Morale', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                        else:
+                            display_text(screen, f'You do not have a weapon to use. Your opponent attacked you.', 50,
+                                         BLACK,
+                                         None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+
+                            addition = random.randint(-10, -1)
+                            stat_info.modify_val('player', 'HEALTH', addition)
+                            display_text(screen, f'{addition} Health', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                    else:
+                        display_text(screen, random.choice(ATTACK_FAIL), 50,
+                                     BLACK,
+                                     None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+
+                        addition = random.randint(-15, -1)
+                        stat_info.modify_val('player', 'HEALTH', addition)
+                        display_text(screen, f'{addition} Health', 25, BLACK, None,
+                                     x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                    if stat_info.player['HEALTH'] == 0:
+                        return 'died in battle'
+
+                if event.key == pg.K_b:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('pure luck'):
+                        display_text(screen, f'Your opponent pitied you and let you go.', 50, BLACK,
+                                     None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+                    else:
+                        display_text(screen, f'Your opponent thought you were pathetic and stabbed you.', 50, BLACK,
+                                     None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('player', 'HEALTH', addition)
+                        display_text(screen, f'{addition} Health', 25, BLACK, None,
+                                     x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                    if stat_info.player['HEALTH'] == 0:
+                        return 'died in battle'
+
+                if event.key == pg.K_c:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    god = random.choice(list(stat_info.favorable_gods.keys()))
+                    if stat_info.favorable_gods[god]:
+                        addition_m = random.randint(1, 5)
+                        stat_info.modify_val('army', 'MORALE', addition_m)
+                        addition_s = random.randint(1, 5)
+                        stat_info.modify_val('player', 'STRENGTH', addition_s)
+
+                        display_text(screen, f'{god} inspired you and you defeated your opponent!', 50, BLACK, None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+                        display_text(screen, f'+{addition_m} Morale \t +{addition_s} Strength', 25, BLACK, None,
+                                     x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                    else:
+                        display_text(screen, f'{god} did not want to help you. Your opponent attacked you.', 50, BLACK,
+                                     None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('player', 'HEALTH', addition)
+                        display_text(screen, f'{addition} Health', 25, BLACK, None,
+                                     x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+                    if stat_info.player['HEALTH'] == 0:
+                        return 'died in battle'
+
+                if event.key == pg.K_d:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('pure luck'):
+                        display_text(screen, f'You slipped away unnoticed', 50, BLACK,
+                                     None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+
+                    else:
+                        display_text(screen, f'Odysseus noticed you leaving and screamed at you', 50, BLACK,
+                                     None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+
+                        addition = random.randint(-10, -1)
+                        stat_info.modify_val('army', 'MORALE', addition)
+                        display_text(screen, f'{addition} Morale', 25, BLACK, None,
+                                     x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
                 if event.key == pg.K_SPACE:
                     return 'battle results'
 
@@ -404,14 +640,14 @@ def xenia(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
 
-    xenia_img = pg.transform.scale_by(pg.image.load("xenia.jpg"), 0.4)
+    xenia_img = pg.transform.scale_by(pg.image.load("xenia.jpg"), 0.3)
     xenia_rect = xenia_img.get_rect()
-    xenia_rect.center = (x // 4, y * 0.6)
+    xenia_rect.center = (x // 4, y * 0.65)
     screen.blit(xenia_img, xenia_rect)
 
     display_text(screen, 'YOU ENCOUNTER A GUEST FRIEND DURING BATTLE', 60, BLACK, None, x // 2, 150, 'center')
     display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
-    display_menu(screen, MENU_LISTS['XENIA'], 60, BLACK, x * 0.5, y * 0.5, -100)
+    display_menu(screen, MENU_LISTS['XENIA'], 60, BLACK, x * 0.5, y * 0.5, -150)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
 
@@ -421,6 +657,9 @@ def xenia(screen, x, y, stat_info):
             # check if a key has been pressed
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_a:
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
                     if stat_info.get_success('pure luck'):
                         addition = random.randint(1, 10)
                         stat_info.modify_val('player', 'ARMOR', addition)
@@ -431,6 +670,7 @@ def xenia(screen, x, y, stat_info):
                                      'center')
                         display_text(screen, f'+{addition} Armor', 25, BLACK, None, x * 0.5, 410, 'center')
                         display_stats(screen, x, stat_info)
+                        stat_info.modify_val('armor', random.choice(list(stat_info.armor.keys())), addition)
                     else:
                         addition = random.randint(-10, -1)
                         stat_info.modify_val('player', 'ARMOR', addition)
@@ -441,9 +681,86 @@ def xenia(screen, x, y, stat_info):
                                      'center')
                         display_text(screen, f'{addition} Armor', 25, BLACK, None, x * 0.5, 410, 'center')
                         display_stats(screen, x, stat_info)
+                        stat_info.modify_val('armor', random.choice(list(stat_info.armor.keys())), addition)
 
                 if event.key == pg.K_b:
-                    pass
+                    text_rect = pg.Rect(0, 300, x, 130)
+                    pg.draw.rect(screen, LAVENDER, text_rect)
+
+                    if stat_info.get_success('player'):
+                        if stat_info.weapons['SPEAR']['equipped']:
+                            addition_m = random.randint(1, 5)
+                            stat_info.modify_val('army', 'MORALE', addition_m)
+                            addition_s = random.randint(1, 5)
+                            stat_info.modify_val('player', 'STRENGTH', addition_s)
+
+                            display_text(screen, ATTACK['SPEAR'], 50, BLACK, None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+                            display_text(screen, f'+{addition_m} Morale \t +{addition_s} Strength', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                        elif stat_info.weapons['SWORD']['equipped']:
+                            addition_m = random.randint(1, 5)
+                            stat_info.modify_val('army', 'MORALE', addition_m)
+                            addition_s = random.randint(1, 5)
+                            stat_info.modify_val('player', 'STRENGTH', addition_s)
+
+                            display_text(screen, ATTACK['SWORD'], 50, BLACK, None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+                            display_text(screen, f'+{addition_m} Morale \t +{addition_s} Strength', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                        elif stat_info.weapons['BOW']['equipped']:
+                            addition_m = random.randint(1, 5)
+                            stat_info.modify_val('army', 'MORALE', addition_m)
+                            addition_s = random.randint(1, 5)
+                            stat_info.modify_val('player', 'STRENGTH', addition_s)
+
+                            display_text(screen, ATTACK['BOW'], 50, BLACK, None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+                            display_text(screen, f'+{addition_m} Morale \t +{addition_s} Strength', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                        else:
+                            display_text(screen, f'You do not have a weapon to use. Your opponent attacked you.', 50,
+                                         BLACK,
+                                         None,
+                                         x * 0.5,
+                                         350,
+                                         'center')
+
+                            addition = random.randint(-10, -1)
+                            stat_info.modify_val('player', 'HEALTH', addition)
+                            display_text(screen, f'{addition} Health', 25, BLACK, None,
+                                         x * 0.5, 410, 'center')
+                            display_stats(screen, x, stat_info)
+
+                    else:
+                        display_text(screen, random.choice(ATTACK_FAIL), 50,
+                                     BLACK,
+                                     None,
+                                     x * 0.5,
+                                     350,
+                                     'center')
+
+                        addition = random.randint(-15, -1)
+                        stat_info.modify_val('player', 'HEALTH', addition)
+                        display_text(screen, f'{addition} Health', 25, BLACK, None,
+                                     x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                    if stat_info.player['HEALTH'] == 0:
+                        return 'died in battle'
+
 
                 if event.key == pg.K_SPACE:
                     return 'battle results'
@@ -462,51 +779,65 @@ def battle_results(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
 
-    display_text(screen, 'ANOTHER LONG DAY HAS COME TO AN END', 60, BLACK, None, x // 2, 150,
-                 'center')
-
     morale_mod = 0
     army_loss = 0
     resources_loss = 0
 
     if stat_info.get_success('army'):
 
-        diomedes_img = pg.transform.scale_by(pg.image.load("diomedes-injures-aphrodite.png"), 1)
+        diomedes_img = pg.transform.scale_by(pg.image.load("diomedes-injures-aphrodite.png"), 1.2)
         diomedes_rect = diomedes_img.get_rect()
-        diomedes_rect.center = (x * 0.5, y * 0.5)
+        diomedes_rect.topleft = (0, 0)
         screen.blit(diomedes_img, diomedes_rect)
+
+        text_background(screen, 1500, 80, x//2 - 750, y // 4 - 40)
+        display_text(screen, 'ANOTHER LONG DAY HAS COME TO AN END', 70, BLACK, None, x // 2, y // 4,
+                     'center')
+
+        text_background(screen, 1000, 60, x // 2 - 500, y // 3 - 30)
+        display_text(screen, 'The Greek army had success on the battlefield!',50, BLACK, None, x * 0.5, y // 3,
+                     'center')
 
         morale_mod = random.randint(1, 10)
         army_loss = random.randint(-15, -1)
         resources_loss = random.randint(-10, -1)
-        display_text(screen, 'Good battle day!',50, BLACK, None, x * 0.5, 310, 'center')
 
+        text_background(screen, 900, 60, x // 2 - 450, y // 2 - 30)
         display_text(screen, f'+{morale_mod} Morale \t {army_loss} Warriors \t {resources_loss} Resources',
-                     25, BLACK, None, x * 0.5, 410, 'center')
+                     50, BLACK, None, x * 0.5, y // 2, 'center')
 
     else:
 
-        patroclus_img = pg.transform.scale_by(pg.image.load("patroclus-death.jpg"), 1)
+        patroclus_img = pg.transform.scale_by(pg.image.load("patroclus-death.jpg"), 2.7)
         patroclus_rect = patroclus_img.get_rect()
         patroclus_rect.center = (x * 0.5, y * 0.5)
         screen.blit(patroclus_img, patroclus_rect)
+
+        text_background(screen, 1500, 80, x // 2 - 750, y // 4 - 40)
+        display_text(screen, 'ANOTHER LONG DAY HAS COME TO AN END', 70, BLACK, None, x // 2, y // 4,
+                     'center')
 
         morale_mod = random.randint(-20, -1)
         army_loss = random.randint(-30, -10)
         resources_loss = random.randint(-30, -10)
 
-        display_text(screen, 'Bad battle day.', 50, BLACK, None, x * 0.5, 310, 'center')
+        text_background(screen, 1200, 60, x // 2 - 600, y // 3 - 30)
+        display_text(screen, 'The Greek army did not have success on the battlefield', 50, BLACK, None, x * 0.5, y // 3,
+                     'center')
 
+        text_background(screen, 900, 60, x // 2 - 450, y // 2 - 30)
         display_text(screen, f'{morale_mod} Morale \t {army_loss} Warriors \t {resources_loss} Resources',
-                     25, BLACK, None, x * 0.5, 410, 'center')
+                     50, BLACK, None, x * 0.5, y // 2, 'center')
 
     stat_info.modify_val('army', 'MORALE', morale_mod)
     stat_info.modify_val('army', 'WARRIORS', army_loss)
     stat_info.modify_val('army', 'RESOURCES', resources_loss)
+    if stat_info.army['WARRIORS'] == 0:
+        return 'surprise attack'
 
-
-
+    text_background(screen, 500, 60, x // 2 - 250, y * 0.9 - 30)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
+    stat_info.equipment_off()
 
     # loop while running is true
     while running:
@@ -530,9 +861,9 @@ def day_end(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
 
-    nestor_img = pg.transform.scale_by(pg.image.load("nestor.png"), 1)
+    nestor_img = pg.transform.scale_by(pg.image.load("nestor.png"), 0.48)
     nestor_rect = nestor_img.get_rect()
-    nestor_rect.center = (x // 3, y * 0.5)
+    nestor_rect.center = (x // 4, y * 0.65)
     screen.blit(nestor_img, nestor_rect)
 
     display_text(screen, 'ANOTHER LONG DAY HAS COME TO AN END', 60, BLACK, None, x // 2, 150, 'center')
@@ -540,7 +871,6 @@ def day_end(screen, x, y, stat_info):
     display_menu(screen, MENU_LISTS['END'],50, BLACK, x * 0.5, y * 0.5, -80)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
-
 
 
     # loop while running is true
@@ -552,14 +882,22 @@ def day_end(screen, x, y, stat_info):
                 if event.key == pg.K_a:
                     text_rect = pg.Rect(0, 300, x, 130)
                     pg.draw.rect(screen, LAVENDER, text_rect)
-                    god = random.choice(list(stat_info.favorable_gods.keys()))
-                    display_text(screen, f'You sacrificed a hecatomb for {god}', 50, BLACK, None, x * 0.5, 350,
-                                 'center')
-                    # Pick random god to sacrifice to and then make their favor true and add to luck
-                    if stat_info.favorable_gods[god]:
-                        stat_info.luck += 0.02
+                    if stat_info.army['RESOURCES'] < 10:
+                        display_text(screen, f'You do not have enough resources to make a sacrifice.', 50, BLACK, None,
+                                     x * 0.5, 350,
+                                     'center')
                     else:
-                        stat_info.favorable_gods[god] = True
+                        god = random.choice(list(stat_info.favorable_gods.keys()))
+                        display_text(screen, f'You sacrificed a hecatomb for {god}', 50, BLACK, None, x * 0.5, 350,
+                                     'center')
+                        stat_info.modify_val('army', 'RESOURCES', -10)
+                        display_text(screen, f'-10 Resources', 25, BLACK, None, x * 0.5, 410, 'center')
+                        display_stats(screen, x, stat_info)
+
+                        if stat_info.favorable_gods[god]:
+                            stat_info.luck += 0.02
+                        else:
+                            stat_info.favorable_gods[god] = True
 
                 if event.key == pg.K_b:
                     text_rect = pg.Rect(0, 300, x, 130)
@@ -572,6 +910,8 @@ def day_end(screen, x, y, stat_info):
                         display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
                         display_stats(screen, x, stat_info)
                     else:
+                        if stat_info.player['HEALTH'] < 10:
+                            return 'death by wine'
                         addition = random.randint(-10, -1)
                         stat_info.modify_val('army', 'MORALE', addition)
 
@@ -639,10 +979,14 @@ def night_decision(screen, x, y):
     screen.fill(BG)
     pg.display.update()
 
-    display_text(screen, 'AS EVERYONE FALLS ASLEEP, YOUR FRIEND ASKS YOU TO GO ON A NIGHTTIME EXPEDITION', 30, BLACK,
-                 None, x // 2, 150, 'center')
-    display_text(screen, 'What will you do?', 60, BLACK, None, x // 2, 250, 'center')
-    display_menu(screen, MENU_LISTS['DECISION'],50, BLACK, x * 0.5, y * 0.3, -80)
+    display_text(screen, 'AS EVERYONE FALLS ASLEEP, DIOMEDES ASKS YOU', 60, BLACK,
+                 None, x // 2, y // 8, 'center')
+    display_text(screen, 'TO GO ON A NIGHTTIME EXPEDITION', 60, BLACK,
+                 None, x // 2, y // 8 + 70, 'center')
+
+
+    display_text(screen, 'What will you do?', 80, BLACK, None, x // 2, y // 3, 'center')
+    display_menu(screen, MENU_LISTS['DECISION'],80, BLACK, x // 3.4, y // 2, -180)
 
     # loop while running is true
     while running:
@@ -669,9 +1013,9 @@ def night_expedition(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
 
-    expedition_img = pg.transform.scale_by(pg.image.load("expedition.png"), 1)
+    expedition_img = pg.transform.scale_by(pg.image.load("expedition.png"), 0.4)
     expedition_rect = expedition_img.get_rect()
-    expedition_rect.center = (x // 3, y * 0.5)
+    expedition_rect.center = (x // 4, y * 0.65)
     screen.blit(expedition_img, expedition_rect)
 
     display_text(screen, 'OFF WE GO!', 60, BLACK,None, x // 2, 150, 'center')
@@ -694,10 +1038,11 @@ def night_expedition(screen, x, y, stat_info):
                         addition = random.randint(1, 10)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'You found some battle plans! Great!', 50, BLACK, None, x * 0.5, 350,
+                        display_text(screen, 'You found some battle plans!', 50, BLACK, None, x * 0.5, 350,
                                      'center')
                         display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
                         display_stats(screen, x, stat_info)
+                        stat_info.luck += 0.05
                     else:
                         addition = random.randint(-10, -1)
                         stat_info.modify_val('army', 'MORALE', addition)
@@ -717,15 +1062,14 @@ def night_expedition(screen, x, y, stat_info):
                         addition = random.randint(1, 10)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'You did it!', 50, BLACK, None, x * 0.5, 350, 'center')
+                        display_text(screen, f'You killed {random.randint(2, 8)} soldiers!', 50, BLACK, None, x * 0.5, 350, 'center')
                         display_text(screen, f'+{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
                         display_stats(screen, x, stat_info)
                     else:
                         addition = random.randint(-10, -1)
                         stat_info.modify_val('player', 'HEALTH', addition)
 
-                        display_text(screen, 'You DID NOT do it :(', 50, BLACK, None,
-                                     x * 0.5,
+                        display_text(screen, 'You got caught and the guards attacked you.', 50, BLACK, None, x * 0.5,
                                      350,
                                      'center')
                         display_text(screen, f'{addition} Health', 25, BLACK, None, x * 0.5, 410, 'center')
@@ -747,7 +1091,7 @@ def night_expedition(screen, x, y, stat_info):
                         addition = random.randint(-10, -1)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'You couldnt get anything :(', 50, BLACK, None, x * 0.5, 350,
+                        display_text(screen, 'You couldn\'t find anything :(', 50, BLACK, None, x * 0.5, 350,
                                      'center')
                         display_text(screen, f'{addition} Morale', 25, BLACK, None, x * 0.5, 410, 'center')
                         display_stats(screen, x, stat_info)
@@ -760,7 +1104,8 @@ def night_expedition(screen, x, y, stat_info):
                         addition = random.randint(1, 6)
                         stat_info.modify_val('army', 'MORALE', addition)
 
-                        display_text(screen, 'You got someone!', 50, BLACK, None, x * 0.5, 350,
+                        display_text(screen, 'You successfully kidnapped someone!', 50, BLACK, None, x * 0.5,
+                                     350,
                                      'center')
                         display_text(screen, f'+{addition} Morale', 25, BLACK,
                                      None, x * 0.5, 410,
@@ -777,6 +1122,7 @@ def night_expedition(screen, x, y, stat_info):
                         display_stats(screen, x, stat_info)
 
                 if event.key == pg.K_SPACE:
+                    stat_info.equipment_off()
                     return 'day begin'
 
                 # if ESC key pressed, exit game
@@ -792,9 +1138,9 @@ def end_decision(screen, x, y, stat_info):
     running = True
 
     change_screen_color(screen, BG)
-    display_text(screen, 'Your time is up! What will you do?', 30, BLACK,
-                 None, x // 2, y // 2, 'center')
-    display_menu(screen, MENU_LISTS['ENDING'], 30, BLACK, x//2, y//2, -40)
+    display_text(screen, 'Your time is up! What will you do?', 70, BLACK,
+                 None, x // 2, y // 3, 'center')
+    display_menu(screen, MENU_LISTS['ENDING'], 80, BLACK, x//4.7, y//2, -150)
 
     pg.display.update()
     # loop while running is true
