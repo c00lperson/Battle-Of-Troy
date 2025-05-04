@@ -89,6 +89,11 @@ def change_screen_color(screen, color):
     pg.display.update()
 
 
+def text_background(screen, width, height, x, y):
+    s = pg.Surface((width, height))
+    s.set_alpha(135)
+    s.fill((255, 255, 255))
+    screen.blit(s, (x, y))
 
 def display_menu(screen, lst, size, color, x, y_start, y_decrement):
     y = y_start

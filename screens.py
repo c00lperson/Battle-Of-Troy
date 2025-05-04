@@ -13,28 +13,14 @@ def start(screen, x, y, stat_info):
     start_rect.center = (x * 0.5, y * 0.5)
     screen.blit(start_img, start_rect)
 
-    s1 = pg.Surface((400, 75))
-    s1.set_alpha(128)
-    s1.fill((255, 255, 255))
-    screen.blit(s1, (x // 2 - 200, y // 4 - 40))
-
-    s2 = pg.Surface((1000, 120))
-    s2.set_alpha(128)
-    s2.fill((255, 255, 255))
-    screen.blit(s2, (x // 2 - 500, y // 2 - 60))
-
-    s3 = pg.Surface((600, 75))
-    s3.set_alpha(128)
-    s3.fill((255, 255, 255))
-    screen.blit(s3, (x // 2 - 300, y *0.9 - 40))
-
-
+    text_background(screen, 400, 75, x // 2 - 200, y // 4 - 40)
     display_text(screen, 'WELCOME TO', 50, BLACK, None, x // 2, y // 4, 'center')
 
+    text_background(screen, 1000, 120, x // 2 - 500, y // 2 - 60)
     display_text(screen, 'THE BATTLE OF TROY', 100, BLACK, None, x // 2, y // 2, 'center')
 
+    text_background(screen, 600, 75, x // 2 - 300, y *0.9 - 40)
     display_text(screen, 'PRESS SPACE TO START', 50, BLACK, None, x // 2, y * 0.9, 'center')
-
 
     pg.display.update()
     # loop while running is true
@@ -66,22 +52,8 @@ def army_join(screen, x, y, stat_info):
     army_rect.topleft = (0, 0)
     screen.blit(army_img, army_rect)
 
-    s1 = pg.Surface((1400, 100))
-    s1.set_alpha(128)
-    s1.fill((255, 255, 255))
-    screen.blit(s1, (x // 2 - 700, y // 3 - 50))
-
-    s2 = pg.Surface((700, 50))
-    s2.set_alpha(128)
-    s2.fill((255, 255, 255))
-    screen.blit(s2, (x // 2 - 350, y // 2 - 30))
-
-    s3 = pg.Surface((600, 75))
-    s3.set_alpha(128)
-    s3.fill((255, 255, 255))
-    screen.blit(s3, (x // 2 - 300, y * 0.9 - 40))
-
     random.shuffle(stat_info.armies)
+    text_background(screen, 1400, 100, x // 2 - 700, y // 3 - 50)
     display_text(screen, f'An army of {stat_info.armies.pop()} has come to join you in battle!', 60, BLACK, None,
                  x // 2, y // 3,
                  'center')
@@ -90,17 +62,16 @@ def army_join(screen, x, y, stat_info):
     resources_add = random.randint(10, 20)
     morale_add = random.randint(5, 10)
 
+    text_background(screen, 700, 50, x // 2 - 350, y // 2 - 30)
     display_text(screen, f'+{morale_add} Morale \t +{warriors_add} Warriors \t +{resources_add} Resources',
                  40, BLACK, None, x * 0.5, y * 0.5, 'center')
 
+    text_background(screen, 600, 75, x // 2 - 300, y * 0.9 - 40)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
-
-
 
     stat_info.modify_val('army', 'MORALE', morale_add)
     stat_info.modify_val('army', 'WARRIORS', warriors_add)
     stat_info.modify_val('army', 'RESOURCES', resources_add)
-
 
     # loop while running is true
     while running:
@@ -116,7 +87,6 @@ def army_join(screen, x, y, stat_info):
                     # quit pygame
                     pg.quit()
                     quit()
-
 
 
 def day_beginning(screen, x, y, day_num, stat_info):
@@ -163,26 +133,14 @@ def halfway_done(screen, x, y):
     battle_rect.center = (x * 0.5, y * 0.5)
     screen.blit(battle_img, battle_rect)
 
-    s1 = pg.Surface((1400, 90))
-    s1.set_alpha(128)
-    s1.fill((255, 255, 255))
-    screen.blit(s1, (x // 2 - 700, y // 3 - 50))
-
-    s2 = pg.Surface((1000, 75))
-    s2.set_alpha(128)
-    s2.fill((255, 255, 255))
-    screen.blit(s2, (x // 2 - 500, y // 2 - 40))
-
-    s3 = pg.Surface((600, 75))
-    s3.set_alpha(128)
-    s3.fill((255, 255, 255))
-    screen.blit(s3, (x // 2 - 300, y * 0.9 - 40))
-
+    text_background(screen, 1400, 90, x // 2 - 700, y // 3 - 50)
     display_text(screen, 'YOUR TIME IS OVER HALFWAY DONE', 80, BLACK, None, x // 2, y // 3, 'center')
+
+    text_background(screen, 1000, 75, x // 2 - 500, y // 2 - 40)
     display_text(screen, 'YOU CAN NOW ATTEMPT TO SACK TROY', 50, BLACK, None, x // 2, y // 2, 'center')
+
+    text_background(screen, 600, 75, x // 2 - 300, y *0.9 - 40)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
-
-
 
     # loop while running is true
     while running:
@@ -206,11 +164,15 @@ def stay_base(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
 
+    battle_img = pg.transform.scale_by(pg.image.load("achilles-agamemnon.png"), 0.8)
+    battle_rect = battle_img.get_rect()
+    battle_rect.center = (x // 4, y * 0.6)
+    screen.blit(battle_img, battle_rect)
+
     display_text(screen, 'What will you do at base today?', 80, BLACK, None, x // 2, 150, 'center')
     display_menu(screen, MENU_LISTS['BASE'], 50, BLACK, x * 0.5, y * 0.4, -80)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
-
 
     # loop while running is true
     while running:
@@ -400,30 +362,6 @@ def armor(screen, x, y, stat_info):
                     pg.quit()
                     quit()
 
-def combat(screen, x, y, stat_info):
-    # create boolean variable to run game
-    running = True
-    # NOTE: PLAYERS SHOULD BE ALLOWED TO TAKE THREE ACTIONS FOR COMBAT EACH DAY.
-    screen.fill(BG)
-    pg.display.update()
-    display_text(screen, 'READY, SET, FIGHT!', 60, BLACK, None, x // 2, 150, 'center')
-    display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
-    display_stats(screen, x, stat_info)
-    # loop while running is true
-    while running:
-        for event in pg.event.get():
-            # check if a key has been pressed
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
-                    return 'battle results'
-
-                # if ESC key pressed, exit game
-                if event.key == pg.K_ESCAPE:
-                    running = False
-                    # quit pygame
-                    pg.quit()
-                    quit()
-
 
 def battle(screen, x, y, stat_info):
     # create boolean variable to run game
@@ -431,6 +369,11 @@ def battle(screen, x, y, stat_info):
 
     screen.fill(BG)
     pg.display.update()
+
+    paris_img = pg.transform.scale_by(pg.image.load("venus-rescues-paris.png"), 1)
+    paris_rect = paris_img.get_rect()
+    paris_rect.center = (x // 4, y * 0.6)
+    screen.blit(paris_img, paris_rect)
 
     display_text(screen, 'A TROJAN WARRIOR APPROACHES YOU', 60, BLACK, None, x // 2, 150, 'center')
     display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
@@ -461,9 +404,14 @@ def xenia(screen, x, y, stat_info):
     screen.fill(BG)
     pg.display.update()
 
+    xenia_img = pg.transform.scale_by(pg.image.load("xenia.jpg"), 0.4)
+    xenia_rect = xenia_img.get_rect()
+    xenia_rect.center = (x // 4, y * 0.6)
+    screen.blit(xenia_img, xenia_rect)
+
     display_text(screen, 'YOU ENCOUNTER A GUEST FRIEND DURING BATTLE', 60, BLACK, None, x // 2, 150, 'center')
     display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
-    display_menu(screen, MENU_LISTS['XENIA'], 50, BLACK, x * 0.5, y * 0.5, -80)
+    display_menu(screen, MENU_LISTS['XENIA'], 60, BLACK, x * 0.5, y * 0.5, -100)
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
     display_stats(screen, x, stat_info)
 
@@ -522,6 +470,12 @@ def battle_results(screen, x, y, stat_info):
     resources_loss = 0
 
     if stat_info.get_success('army'):
+
+        diomedes_img = pg.transform.scale_by(pg.image.load("diomedes-injures-aphrodite.png"), 1)
+        diomedes_rect = diomedes_img.get_rect()
+        diomedes_rect.center = (x * 0.5, y * 0.5)
+        screen.blit(diomedes_img, diomedes_rect)
+
         morale_mod = random.randint(1, 10)
         army_loss = random.randint(-15, -1)
         resources_loss = random.randint(-10, -1)
@@ -531,6 +485,12 @@ def battle_results(screen, x, y, stat_info):
                      25, BLACK, None, x * 0.5, 410, 'center')
 
     else:
+
+        patroclus_img = pg.transform.scale_by(pg.image.load("patroclus-death.jpg"), 1)
+        patroclus_rect = patroclus_img.get_rect()
+        patroclus_rect.center = (x * 0.5, y * 0.5)
+        screen.blit(patroclus_img, patroclus_rect)
+
         morale_mod = random.randint(-20, -1)
         army_loss = random.randint(-30, -10)
         resources_loss = random.randint(-30, -10)
@@ -544,7 +504,7 @@ def battle_results(screen, x, y, stat_info):
     stat_info.modify_val('army', 'WARRIORS', army_loss)
     stat_info.modify_val('army', 'RESOURCES', resources_loss)
 
-    display_stats(screen, x, stat_info)
+
 
     display_text(screen, MESSAGES['cont'], 50, BLACK, None, x // 2, y * 0.9, 'center')
 
@@ -569,6 +529,11 @@ def day_end(screen, x, y, stat_info):
 
     screen.fill(BG)
     pg.display.update()
+
+    nestor_img = pg.transform.scale_by(pg.image.load("nestor.png"), 1)
+    nestor_rect = nestor_img.get_rect()
+    nestor_rect.center = (x // 3, y * 0.5)
+    screen.blit(nestor_img, nestor_rect)
 
     display_text(screen, 'ANOTHER LONG DAY HAS COME TO AN END', 60, BLACK, None, x // 2, 150, 'center')
     display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
@@ -703,6 +668,12 @@ def night_expedition(screen, x, y, stat_info):
 
     screen.fill(BG)
     pg.display.update()
+
+    expedition_img = pg.transform.scale_by(pg.image.load("expedition.png"), 1)
+    expedition_rect = expedition_img.get_rect()
+    expedition_rect.center = (x // 3, y * 0.5)
+    screen.blit(expedition_img, expedition_rect)
+
     display_text(screen, 'OFF WE GO!', 60, BLACK,None, x // 2, 150, 'center')
     display_text(screen, 'What will you do?', 50, BLACK, None, x // 2, 250, 'center')
     display_menu(screen, MENU_LISTS['EXPEDITION'],50, BLACK, x * 0.5, y * 0.5, -80)
@@ -832,36 +803,17 @@ def end_decision(screen, x, y, stat_info):
             # check if a key has been pressed
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_a:
-                    pass
+                    if stat_info.get_success('overall'):
+                        return 'total win'
+                    elif stat_info.get_success('army'):
+                        return 'army win player died'
+                    elif stat_info.get_success('player'):
+                        return 'army retreat'
+                    else:
+                        return 'total loss'
+
                 if event.key == pg.K_b:
                     return 'flee'
-
-                # if ESC key pressed, exit game
-                if event.key == pg.K_ESCAPE:
-                    running = False
-                    # quit pygame
-                    pg.quit()
-                    quit()
-
-
-
-
-def end(screen, x, y):
-    # create boolean variable to run game
-    running = True
-
-    change_screen_color(screen, BG)
-    display_text(screen, 'BYEEEEEE', 50, BLACK, None, x // 2, y // 2, 'center')
-    display_text(screen, 'Press ESC to exit, SPACE to return to main menu', 50, BLACK, None, x // 2, (y // 2) + (y //
-                                                                                                                4), 'center')
-    pg.display.update()
-    # loop while running is true
-    while running:
-        for event in pg.event.get():
-            # check if a key has been pressed
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
-                    return 'start'
 
                 # if ESC key pressed, exit game
                 if event.key == pg.K_ESCAPE:

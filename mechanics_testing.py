@@ -33,11 +33,21 @@ def main():
         elif scrn == 'start':
             day = 1
             scrn = start(screen, x, y, info)
-            fled_the_scene(screen, x, y)
+            # death_by_medic(screen, x, y)
+            # fled_the_scene(screen, x, y)
+            # died_in_battle(screen, x, y)
+            # death_by_wine(screen, x, y)
+            # death_by_fighting_practice(screen, x, y)
+            # total_win(screen, x, y)
+            # total_loss(screen, x, y)
+            # surprise_attack(screen, x, y)
+            # army_retreat(screen, x, y)
+            # army_won_player_died(screen, x, y)
+
 
 
         elif scrn == 'day begin':
-            if day > 7:
+            if day == 8:
                 halfway_done(screen, x, y)
             scrn = day_beginning(screen, x, y, day, info)
 
@@ -74,14 +84,21 @@ def main():
             scrn = night_expedition(screen, x, y, info)
             day += 1
 
+        elif scrn == 'end decision':
+            scrn = end_decision(screen, x, y, info)
+
         elif scrn == 'death by medic':
             scrn = death_by_medic(screen, x, y)
 
         elif scrn == 'flee':
             scrn = fled_the_scene(screen, x, y)
 
+        elif scrn == 'total win':
+            scrn = total_win(screen, x, y)
+
         for event in pg.event.get():
             # check if a key has been pressed
+            if event.type == pg.KEYDOWN:
 
                 # if ESC key pressed, exit game
                 if event.key == pg.K_ESCAPE:
