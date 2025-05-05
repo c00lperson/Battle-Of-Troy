@@ -963,7 +963,7 @@ def day_end(screen, x, y, stat_info):
                             display_stats(screen, x, stat_info)
 
                             if stat_info.favorable_gods[god]:
-                                stat_info.luck += 0.02
+                                stat_info.luck += 0.05
                             else:
                                 stat_info.favorable_gods[god] = True
                         action_chosen = True

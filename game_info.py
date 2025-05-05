@@ -33,13 +33,6 @@ class GameStats:
                                'Thetis': False,
                                'Hermes': False
                                }
-        self.neutral_gods = {'Zeus' : False}
-
-        self.unfavorable_gods = {'Aphrodite' : False,
-                                 'Apollo' : False,
-                                 'Ares' : False,
-                                 'Artemis' : False
-                                 }
 
         self.luck = 0.5
 
