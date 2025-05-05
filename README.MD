@@ -14,6 +14,7 @@
 * The goal of the game is to successfully take down Troy!
 * Each day, you will be given options of various actions that you can take.
   * You can only choose ONE action on each screen.
+  * When you are going into battle, you cannot deselect armor/weapons after equipping them.
 * Each action will impact various game stats
   * Player stats: Health, Strength, Armor
   * Army Stats: Warriors, Morale, Resources
