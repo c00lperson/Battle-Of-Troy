@@ -3,7 +3,7 @@
 ---
 ## Download Instructions
 * You need to have Python downloaded in order for the game to run. 
-  * Click [***here***](https://www.python.org/downloads/) to download
+  * Click [***here***](https://www.python.org/downloads/){:target="_blank"} to download
 * Click on the green 'Code' button above, then click 'Download ZIP'
 * Extract the files to your desired location
 * Navigate into the folder and double-click on the ***battle_troy*** file. This should run the game.
