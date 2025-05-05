@@ -7,10 +7,7 @@ def death_by_medic(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("patroclus-wound2.png"), 1.7)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.topleft = (0, 0)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/patroclus-wound2.png", 1.7, 0, 0, 'left')
 
     text_background(screen, 1600, 190, x // 2 - 800, y // 3 - 60)
     display_text(screen, 'The medic was harboring a secret grudge against you', 70, BLACK,
@@ -40,10 +37,7 @@ def fled_the_scene(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("women-fleet.png"), 1.8)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.center = (x*0.5, y*0.5)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/women-fleet.png", 1.8, x*0.5, y*0.5, 'center')
 
     text_background(screen, 1100, 75, x // 2 - 550, y // 4 - 40)
     display_text(screen, 'You secretly sailed away in the middle of the night', 50, BLACK, None,
@@ -75,10 +69,7 @@ def died_in_battle(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("fury-achilles.png"), 1.3)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/fury-achilles.png", 1.3, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1400, 100, x // 2 - 700, y // 3 - 50)
     display_text(screen, 'Your opponent slaughtered you during battle!', 70, BLACK, None, x // 2, y // 3, 'center')
@@ -110,10 +101,7 @@ def death_by_wine(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("feast-achelous.png"), 1.8)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/feast-achelous.png", 1.8, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1000, 170, x // 2 - 500, y // 3 - 40)
     display_text(screen, 'You drank too much wine and', 70, BLACK, None, x // 2, y // 3,
@@ -145,10 +133,7 @@ def death_by_fighting_practice(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("fury-achilles.png"), 1.3)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/fury-achilles.png", 1.3, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1400, 200, x // 2 - 700, y // 2 - 50)
     display_text(screen, 'You were in such a weak condition', 80, BLACK, None, x // 2, y // 2,
@@ -179,10 +164,7 @@ def total_win(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    win_img = pg.transform.scale_by(pg.image.load("siege-of-troy2.png"), 2.2)
-    win_rect = win_img.get_rect()
-    win_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(win_img, win_rect)
+    display_img(screen, "images/siege-of-troy2.png", 2.2, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1500, 70, x // 2 - 750, y // 3 - 35)
     display_text(screen, 'The army built the wooden horse and successfully wheeled it into Troy!', 50, BLACK, None,
@@ -215,10 +197,7 @@ def total_loss(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("patroclus-funeral.png"), 1.8)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/patroclus-funeral.png", 1.8, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1300, 130, x // 2 - 650, y // 4 - 30)
     display_text(screen, 'The army tried to build the wooden horse,', 50, BLACK, None, x // 2, y // 4, 'center')
@@ -254,10 +233,7 @@ def surprise_attack(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("patroclus-funeral.png"), 1.8)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/patroclus-funeral.png", 1.8, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1300, 140, x // 2 - 650, y // 4 - 35)
     display_text(screen, 'The Trojans somehow got word of your battle plan', 60, BLACK, None, x // 2, y // 4, 'center')
@@ -293,10 +269,7 @@ def army_retreat(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    fleet_img = pg.transform.scale_by(pg.image.load("women-fleet.png"), 1.8)
-    fleet_rect = fleet_img.get_rect()
-    fleet_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(fleet_img, fleet_rect)
+    display_img(screen, "images/women-fleet.png", 1.8, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1200, 140, x // 2 - 600, y // 4 - 35)
     display_text(screen, 'The Trojans were overpowering the Greek army', 60, BLACK, None, x // 2, y // 4, 'center')
@@ -328,10 +301,7 @@ def army_won_player_died(screen, x, y):
     # create boolean variable to run game
     running = True
 
-    win_img = pg.transform.scale_by(pg.image.load("siege-of-troy2.png"), 2.2)
-    win_rect = win_img.get_rect()
-    win_rect.center = (x * 0.5, y * 0.5)
-    screen.blit(win_img, win_rect)
+    display_img(screen, "images/siege-of-troy2.png", 2.2, x * 0.5, y * 0.5, 'center')
 
     text_background(screen, 1000, 150, x // 2 - 500, y // 4 - 35)
     display_text(screen, 'The Greeks successfuly sacked troy!', 60, BLACK, None, x // 2, y // 4, 'center')

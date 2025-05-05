@@ -21,41 +21,19 @@ def main():
     scrn = 'start'
     day = 0
 
-    info = GameStats()
+    info = None
 
     # loop while running is true
     while running:
 
         if day > 14:
-            scrn = 'end_decision'
+            scrn = 'end decision'
             day = 0
 
         elif scrn == 'start':
+            info = GameStats()
             day = 1
             scrn = start(screen, x, y, info)
-            # death_by_medic(screen, x, y)
-            # fled_the_scene(screen, x, y)
-            # died_in_battle(screen, x, y)
-            # death_by_wine(screen, x, y)
-            # death_by_fighting_practice(screen, x, y)
-            # total_win(screen, x, y)
-            # total_loss(screen, x, y)
-            # surprise_attack(screen, x, y)
-            # army_retreat(screen, x, y)
-            # army_won_player_died(screen, x, y)
-            # halfway_done(screen, x, y)
-            # army_join(screen, x, y, info)
-            # stay_base(screen, x, y, info)
-            armor(screen, x, y, info)
-            # battle(screen, x, y, info)
-            # xenia(screen, x, y, info)
-            # battle_results(screen, x, y, info)
-            # day_end(screen, x, y, info)
-            # night_expedition(screen, x, y, info)
-            # day_beginning(screen, x, y, day, info)
-            # night_decision(screen, x, y)
-            # end_decision(screen, x, y, info)
-
 
         elif scrn == 'day begin':
             if day == 8:
@@ -88,7 +66,7 @@ def main():
 
             if scrn == 'day begin':
 
-                if random.random() < 0.5 and sum(info.army.values()) < 250:
+                if random.random() < 0.5 and sum(info.army.values()) < 200:
                     army_join(screen, x, y, info)
                 day += 1
 

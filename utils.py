@@ -15,6 +15,7 @@ SKYBLUE2 = pg.Color('skyblue3')
 VIOLETRED = pg.Color('violetred4')
 YELLOW = pg.Color('yellow')
 GREEN = pg.Color('green')
+MSGS = pg.Color('chocolate4')
 BG = pg.Color('lightgoldenrod3')
 
 STAT_FONT = 20
@@ -27,53 +28,11 @@ UNDER_RECT_WIDTH = 104
 RECT_X_DEC_VALUE = 50
 
 
-MENU_LISTS = { 'START' : ["Press 'G' to start the game", "Press 'R' to see the rules"],
-               'BEGINNING' : ["Go into combat: Press 'C'", "Stay at the base: Press 'B'"],
-               'BEGINNING OVER HALF' : ["Go into combat: Press 'C'", "Stay at the base: Press 'B'", "SACK THE CITY: "
-                                                                                                  "Press 'S'"],
-               'BASE' : ['A. Seek medical attention', 'B. Attend to wounded soldiers', 'C. Practice fighting',
-                          'D. Entertain', 'E. Do nothing'],
-               'ARMOR' : ['A. Helmet', 'B. Breastplate', 'C. Shield'],
-               'WEAPON' : ['D. Spear', 'E. Sword', 'F. Bow'],
-               'END' : ['A. Sacrifice a hecatomb', 'B. Have a feast', 'C. War council', 'D. Talk to Nestor'],
-               'DECISION' : ['A. Accompany him', 'B. go to sleep'],
-               'EXPEDITION' : ['A. Look for battle plans', 'B. Attack!', 'C. Steal Resources', 'D. Kidnap someone'],
-               'XENIA' : ['A. Exchange armor', 'B. ATTACK!'],
-               'BATTLE' : ['A. FIGHT!', 'B. Supplicate', 'C. Pray to the gods', 'D. Run away'],
-               'ENDING' : ['A. ATTACK THE TROJANS!!!', 'B. Run away']}
-
-ATTACK = {'SPEAR' : 'You threw your spear and hit your opponent in the torso!',
-          'SWORD' : 'You swung your sword and sliced your opponent!',
-          'BOW' : 'You shot your opponent in the leg!'}
-
-ATTACK_FAIL = ['Your opponent dodged your attack and stabbed you',
-               'You tried to block your opponent\'s arrow but you failed',
-               'You tried your best to attack, but your opponent is much stronger than you']
-
-ENTERTAIN = ['You sang a beautiful song!',
-             'You played the lyre and everyone loved it!']
-
-MESSAGES = { 'start' : 'Hello this is a test',
-             'character' : 'This is the character screen',
-             'rules' : 'This is the rules screen',
-             'beginning' : 'This is the beginnng of the day',
-             'base' : 'Staying at base',
-             'armor' : 'This is the armoring screen',
-             'combat' : 'This is the combat screen',
-             'end' : 'This is the end of the day',
-             'expedition' : 'This is the expedition screen',
-             'start options' : 'Press key to pick option: G. Start game R. Rules',
-             'beginning options' : 'Pick: C. combat S. stay',
-             'expedition options' : 'Go? Y/N',
-             'back' : 'Press B to return to main menu',
-             'cont' : 'Press space to continue'
-             }
-
 def display_text(screen, msg, fontSize, textColor, bgColor, x_pos, y_pos, just):
     """Creates and displays text box on screen"""
 
     # set font
-    font = pg.font.Font('Macondo-Regular.ttf', fontSize)
+    font = pg.font.Font('fonts/Macondo-Regular.ttf', fontSize)
 
     # create variable for text
     text = font.render(msg, True, textColor, bgColor)
@@ -94,6 +53,16 @@ def display_text(screen, msg, fontSize, textColor, bgColor, x_pos, y_pos, just):
     # put message on screen and update
     screen.blit(text, textRect)
     pg.display.update()
+
+def display_img(screen, name, scale, x, y, justification):
+    img = pg.transform.scale_by(pg.image.load(name), scale)
+    img_rect = img.get_rect()
+    if justification == 'left':
+        img_rect.topleft = (x, y)
+    elif justification == 'center':
+        img_rect.center = (x, y)
+    screen.blit(img, img_rect)
+
 
 def change_screen_color(screen, color):
     screen.fill(color)
@@ -124,7 +93,7 @@ def stat(screen, stat_name, text_x, text_y, rect_width):
         rect_color = YELLOW
     else:
         rect_color = RED
-    #TODO: Make rect also cover text area
+
     stat_rect_under = pg.Rect(rect_x - 2, STAT_RECT_Y - 2, UNDER_RECT_WIDTH, UNDER_RECT_HEIGHT) # width for this is
     # constant
     stat_rect = pg.Rect(rect_x, STAT_RECT_Y, rect_width, STAT_RECT_HEIGHT)

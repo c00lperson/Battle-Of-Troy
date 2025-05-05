@@ -87,13 +87,17 @@ class GameStats:
 
     def get_success(self, stat_type):
         vals = 0
+        chance = 0
         if stat_type == 'pure luck':
             return random.random() <= self.luck
         elif stat_type == 'player':
             vals = sum(self.player.values())
+            chance = vals / 300
         elif stat_type == 'army':
             vals = sum(self.army.values())
+            chance = vals / 300
         elif stat_type == 'overall':
             vals = sum(self.player.values()) + sum(self.army.values())
-        chance = (vals * self.luck) / 100
+            chance = vals / 600
+
         return random.random() <= chance
